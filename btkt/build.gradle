@@ -1,0 +1,117 @@
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'com.moowork.node'
+apply plugin: 'maven-publish'
+
+kotlin {
+    targets {
+        all {
+            compilations.all {
+                tasks[compileKotlinTaskName].kotlinOptions {
+                    allWarningsAsErrors = true
+                }
+            }
+        }
+        fromPreset(presets.js, 'js') {
+            compilations.all {
+                tasks[compileKotlinTaskName].kotlinOptions {
+                    sourceMap = true
+                    moduleKind = 'commonjs'
+                }
+            }
+        }
+        fromPreset(presets.jvm, 'jvm') {
+            compilations.main {
+                tasks[compileKotlinTaskName].kotlinOptions {
+                    freeCompilerArgs += ['-Xno-param-assertions']
+                }
+            }
+        }
+        fromPreset(presets.linuxX64, 'linuxX64')
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                api 'org.jetbrains.kotlin:kotlin-stdlib-common'
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-common'
+                implementation 'org.jetbrains.kotlin:kotlin-test-annotations-common'
+            }
+        }
+        jsMain {
+            dependencies {
+                api 'org.jetbrains.kotlin:kotlin-stdlib-js'
+            }
+        }
+        jsTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test-js'
+            }
+        }
+        jvmMain {
+            dependencies {
+                api 'org.jetbrains.kotlin:kotlin-stdlib'
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test'
+                implementation 'org.jetbrains.kotlin:kotlin-test-junit'
+            }
+        }
+    }
+}
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint deps.ktlint
+}
+
+task ktlint(type: JavaExec, group: 'verification') {
+    inputs.files fileTree(dir: 'src', include: '**/*.kt')
+    outputs.dir 'src'
+    description = 'Check Kotlin code style.'
+    classpath = configurations.ktlint
+    main = 'com.github.shyiko.ktlint.Main'
+    args '--android', 'src/**/*.kt'
+}
+check.dependsOn ktlint
+
+task ktlintFormat(type: JavaExec, group: 'formatting') {
+    inputs.files fileTree(dir: 'src', include: '**/*.kt')
+    outputs.dir 'src'
+    description = 'Fix Kotlin code style deviations.'
+    classpath = configurations.ktlint
+    main = 'com.github.shyiko.ktlint.Main'
+    args '--android', '-F', 'src/**/*.kt'
+}
+
+node {
+    download = true
+}
+repositories.withType(IvyArtifactRepository) { metadataSources { artifact() } }
+
+task populateNodeModules(type: Copy, dependsOn: compileKotlinJs) {
+    from compileKotlinJs.destinationDir
+    doFirst {
+        configurations.jsTestRuntimeClasspath.each {
+            from zipTree(it.absolutePath).matching { include '*.js' }.files
+        }
+    }
+    into "$buildDir/node_modules"
+}
+
+task installMocha(type: NpmTask) {
+    args = ['install', 'mocha']
+}
+
+task runMocha(type: NodeTask, dependsOn: [compileTestKotlinJs, populateNodeModules, installMocha]) {
+    script = file('node_modules/mocha/bin/mocha')
+    args = [compileTestKotlinJs.outputFile]
+}
+jsTest.dependsOn runMocha
