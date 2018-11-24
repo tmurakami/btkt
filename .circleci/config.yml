@@ -23,6 +23,7 @@ jobs:
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
+            - ~/.konan/cache
       - store_artifacts:
           path: btkt/build/reports
       - store_test_results:
