@@ -12,11 +12,15 @@ kotlin {
             }
         }
         fromPreset(presets.js, 'js') {
-            compilations.all {
+            compilations.main {
                 tasks[compileKotlinTaskName].kotlinOptions {
                     sourceMap = true
-                    moduleKind = 'commonjs'
+                    sourceMapEmbedSources = 'always'
+                    moduleKind = 'umd'
                 }
+            }
+            compilations.test {
+                tasks[compileKotlinTaskName].kotlinOptions.moduleKind = 'commonjs'
             }
         }
         fromPreset(presets.jvm, 'jvm') {
@@ -78,7 +82,7 @@ task ktlint(type: JavaExec, group: 'verification') {
     description = 'Check Kotlin code style.'
     classpath = configurations.ktlint
     main = 'com.github.shyiko.ktlint.Main'
-    args '--android', 'src/**/*.kt'
+    args 'src/**/*.kt'
 }
 check.dependsOn ktlint
 
@@ -88,10 +92,11 @@ task ktlintFormat(type: JavaExec, group: 'formatting') {
     description = 'Fix Kotlin code style deviations.'
     classpath = configurations.ktlint
     main = 'com.github.shyiko.ktlint.Main'
-    args '--android', '-F', 'src/**/*.kt'
+    args '-F', 'src/**/*.kt'
 }
 
 node {
+    version = versions.node
     download = true
 }
 repositories.withType(IvyArtifactRepository) { metadataSources { artifact() } }

@@ -1,4 +1,6 @@
 buildscript {
+    ext.versions = [ktlint: '0.29.0',
+                    node  : '10.13.0',]
     repositories {
         jcenter()
         maven { url 'https://plugins.gradle.org/m2/' }
@@ -47,4 +49,4 @@ dependencyUpdates.resolutionStrategy {
     }
 }
 
-ext.deps = [ktlint: 'com.github.shyiko:ktlint:0.29.0',]
+ext.deps = [ktlint: "com.github.shyiko:ktlint:${versions.ktlint}",]
