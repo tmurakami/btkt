@@ -16,74 +16,71 @@
 
 package com.github.tmurakami.btkt
 
-import kotlin.Long.Companion.MAX_VALUE
-import kotlin.Long.Companion.MIN_VALUE
-import kotlin.Long.Companion.SIZE_BITS
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LongTest {
     @Test
     fun oneBits() {
-        assertEquals(1, MIN_VALUE.oneBits)
+        assertEquals(1, Long.MIN_VALUE.oneBits)
         assertEquals(64, (-1L).oneBits)
         assertEquals(0, 0L.oneBits)
         assertEquals(1, 1L.oneBits)
-        assertEquals(63, MAX_VALUE.oneBits)
+        assertEquals(63, Long.MAX_VALUE.oneBits)
     }
 
     @Test
     fun highestOneBit() {
-        assertEquals(MIN_VALUE, MIN_VALUE.highestOneBit)
-        assertEquals(MIN_VALUE, (-1L).highestOneBit)
+        assertEquals(Long.MIN_VALUE, Long.MIN_VALUE.highestOneBit)
+        assertEquals(Long.MIN_VALUE, (-1L).highestOneBit)
         assertEquals(0L, 0L.highestOneBit)
         assertEquals(1L, 1L.highestOneBit)
-        assertEquals(0x4000000000000000L, MAX_VALUE.highestOneBit)
+        assertEquals(0x4000000000000000L, Long.MAX_VALUE.highestOneBit)
     }
 
     @Test
     fun lowestOneBit() {
-        assertEquals(MIN_VALUE, MIN_VALUE.lowestOneBit)
+        assertEquals(Long.MIN_VALUE, Long.MIN_VALUE.lowestOneBit)
         assertEquals(1L, (-1L).lowestOneBit)
         assertEquals(0L, 0L.lowestOneBit)
         assertEquals(1L, 1L.lowestOneBit)
-        assertEquals(1L, MAX_VALUE.lowestOneBit)
+        assertEquals(1L, Long.MAX_VALUE.lowestOneBit)
     }
 
     @Test
     fun leadingZeros() {
-        assertEquals(0, MIN_VALUE.leadingZeros)
+        assertEquals(0, Long.MIN_VALUE.leadingZeros)
         assertEquals(0, (-1L).leadingZeros)
         assertEquals(64, 0L.leadingZeros)
-        assertEquals(1, MAX_VALUE.leadingZeros)
-        repeat(SIZE_BITS) { assertEquals(63 - it, (1L shl it).leadingZeros) }
+        assertEquals(1, Long.MAX_VALUE.leadingZeros)
+        repeat(Long.SIZE_BITS) { assertEquals(63 - it, (1L shl it).leadingZeros) }
     }
 
     @Test
     fun trailingZeros() {
-        assertEquals(63, MIN_VALUE.trailingZeros)
+        assertEquals(63, Long.MIN_VALUE.trailingZeros)
         assertEquals(0, (-1L).trailingZeros)
         assertEquals(64, 0L.trailingZeros)
-        assertEquals(0, MAX_VALUE.trailingZeros)
-        repeat(SIZE_BITS) { assertEquals(it, (1L shl it).trailingZeros) }
+        assertEquals(0, Long.MAX_VALUE.trailingZeros)
+        repeat(Long.SIZE_BITS) { assertEquals(it, (1L shl it).trailingZeros) }
     }
 
     @Test
     fun reverse() {
-        assertEquals(1L, MIN_VALUE.reverse())
+        assertEquals(1L, Long.MIN_VALUE.reverse())
         assertEquals(-1L, (-1L).reverse())
         assertEquals(0L, 0L.reverse())
-        assertEquals(MIN_VALUE, 1L.reverse())
-        assertEquals(-2L, MAX_VALUE.reverse())
+        assertEquals(Long.MIN_VALUE, 1L.reverse())
+        assertEquals(-2L, Long.MAX_VALUE.reverse())
     }
 
     @Test
     fun reverseBytes() {
-        assertEquals(0x0000000000000080L, MIN_VALUE.reverseBytes())
+        assertEquals(0x0000000000000080L, Long.MIN_VALUE.reverseBytes())
         assertEquals(-1L, (-1L).reverseBytes())
         assertEquals(0L, 0L.reverseBytes())
         assertEquals(0x0100000000000000L, 1L.reverseBytes())
-        assertEquals(-0x0000000000000081L, MAX_VALUE.reverseBytes())
+        assertEquals(-0x0000000000000081L, Long.MAX_VALUE.reverseBytes())
     }
 
     @Test

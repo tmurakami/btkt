@@ -16,8 +16,6 @@
 
 package com.github.tmurakami.btkt
 
-import kotlin.UInt.Companion.MAX_VALUE
-import kotlin.UInt.Companion.SIZE_BITS
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -27,49 +25,49 @@ class UIntTest {
     fun oneBits() {
         assertEquals(0, 0u.oneBits)
         assertEquals(1, 1u.oneBits)
-        assertEquals(32, MAX_VALUE.oneBits)
+        assertEquals(32, UInt.MAX_VALUE.oneBits)
     }
 
     @Test
     fun highestOneBit() {
         assertEquals(0u, 0u.highestOneBit)
         assertEquals(1u, 1u.highestOneBit)
-        assertEquals(0x80000000u, MAX_VALUE.highestOneBit)
+        assertEquals(0x80000000u, UInt.MAX_VALUE.highestOneBit)
     }
 
     @Test
     fun lowestOneBit() {
         assertEquals(0u, 0u.lowestOneBit)
         assertEquals(1u, 1u.lowestOneBit)
-        assertEquals(1u, MAX_VALUE.lowestOneBit)
+        assertEquals(1u, UInt.MAX_VALUE.lowestOneBit)
     }
 
     @Test
     fun leadingZeros() {
         assertEquals(32, 0u.leadingZeros)
-        assertEquals(0, MAX_VALUE.leadingZeros)
-        repeat(SIZE_BITS) { assertEquals(31 - it, (1u shl it).leadingZeros) }
+        assertEquals(0, UInt.MAX_VALUE.leadingZeros)
+        repeat(UInt.SIZE_BITS) { assertEquals(31 - it, (1u shl it).leadingZeros) }
     }
 
     @Test
     fun trailingZeros() {
         assertEquals(32, 0u.trailingZeros)
-        assertEquals(0, MAX_VALUE.trailingZeros)
-        repeat(SIZE_BITS) { assertEquals(it, (1u shl it).trailingZeros) }
+        assertEquals(0, UInt.MAX_VALUE.trailingZeros)
+        repeat(UInt.SIZE_BITS) { assertEquals(it, (1u shl it).trailingZeros) }
     }
 
     @Test
     fun reverse() {
         assertEquals(0u, 0u.reverse())
         assertEquals(0x80000000u, 1u.reverse())
-        assertEquals(MAX_VALUE, MAX_VALUE.reverse())
+        assertEquals(UInt.MAX_VALUE, UInt.MAX_VALUE.reverse())
     }
 
     @Test
     fun reverseBytes() {
         assertEquals(0u, 0u.reverseBytes())
         assertEquals(0x01000000u, 1u.reverseBytes())
-        assertEquals(MAX_VALUE, MAX_VALUE.reverseBytes())
+        assertEquals(UInt.MAX_VALUE, UInt.MAX_VALUE.reverseBytes())
     }
 
     @Test

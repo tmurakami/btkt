@@ -47,11 +47,9 @@ actual val Long.highestOneBit: Long
 actual inline val Long.lowestOneBit: Long get() = and(-this)
 
 actual val Long.leadingZeros: Int
-    get() = let {
-        when (val highBits = ushr(32).toInt()) {
-            0 -> 32 + toInt().leadingZeros
-            else -> highBits.leadingZeros
-        }
+    get() = when (val highBits = ushr(32).toInt()) {
+        0 -> 32 + toInt().leadingZeros
+        else -> highBits.leadingZeros
     }
 
 actual val Long.trailingZeros: Int
@@ -71,7 +69,7 @@ actual fun Long.reverse(): Long {
 }
 
 // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
-actual fun Long.reverseBytes(): Long = let {
+actual fun Long.reverseBytes(): Long {
     var x = this
     x = x and 0x00FF00FF00FF00FFL shl 8 or (x ushr 8 and 0x00FF00FF00FF00FFL)
     return x shl 48 or (x and 0xFFFF0000L shl 16) or (x ushr 16 and 0xFFFF0000L) or (x ushr 48)
