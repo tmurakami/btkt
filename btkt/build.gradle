@@ -99,13 +99,14 @@ node {
     version = versions.node
     download = true
 }
+// TODO https://github.com/srs/gradle-node-plugin/issues/301
 repositories.withType(IvyArtifactRepository) { metadataSources { artifact() } }
 
 task populateNodeModules(type: Copy, dependsOn: compileKotlinJs) {
     from compileKotlinJs.destinationDir
     doFirst {
         configurations.jsTestRuntimeClasspath.each {
-            from zipTree(it.absolutePath).matching { include '*.js' }.files
+            from zipTree(it.absolutePath).matching { include '*.js' }
         }
     }
     into "$buildDir/node_modules"
