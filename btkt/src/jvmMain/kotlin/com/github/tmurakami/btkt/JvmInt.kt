@@ -27,11 +27,8 @@ import java.lang.Integer.reverseBytes
 
 actual inline val Int.oneBits: Int get() = bitCount(this)
 actual inline val Int.highestOneBit: Int get() = highestOneBit(this)
-actual inline val Int.lowestOneBit: Int get() = and(-this)
 actual inline val Int.leadingZeros: Int get() = numberOfLeadingZeros(this)
 actual inline val Int.trailingZeros: Int get() = numberOfTrailingZeros(this)
 
 actual inline fun Int.reverse(): Int = reverse(this)
 actual inline fun Int.reverseBytes(): Int = reverseBytes(this)
-actual inline infix fun Int.rol(bitCount: Int): Int = shl(bitCount) or ushr(-bitCount)
-actual inline infix fun Int.ror(bitCount: Int): Int = ushr(bitCount) or shl(-bitCount)

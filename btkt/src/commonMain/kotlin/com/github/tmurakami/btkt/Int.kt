@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.github.tmurakami.btkt
 
 /**
@@ -29,7 +31,7 @@ expect val Int.highestOneBit: Int
 /**
  * Returns the rightmost 1-bit, or 0 if none.
  */
-expect val Int.lowestOneBit: Int
+inline val Int.lowestOneBit: Int get() = and(-this)
 
 /**
  * Returns the number of 0-bits preceding the leftmost 1-bit, or 32 if all bits are 0.
@@ -54,9 +56,9 @@ expect fun Int.reverseBytes(): Int
 /**
  * Returns the value obtained by rotating to the left by the specified [bitCount].
  */
-expect infix fun Int.rol(bitCount: Int): Int
+inline infix fun Int.rol(bitCount: Int): Int = shl(bitCount) or ushr(-bitCount)
 
 /**
  * Returns the value obtained by rotating to the right by the specified [bitCount].
  */
-expect infix fun Int.ror(bitCount: Int): Int
+inline infix fun Int.ror(bitCount: Int): Int = ushr(bitCount) or shl(-bitCount)
