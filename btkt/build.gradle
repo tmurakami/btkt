@@ -12,6 +12,31 @@ kotlin {
                     allWarningsAsErrors = true
                 }
             }
+            mavenPublication {
+                pom {
+                    name = 'Bt.kt'
+                    description = 'A bit twiddling library for Kotlin'
+                    url = 'https://github.com/tmurakami/btkt'
+                    inceptionYear = '2018'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'tmurakami'
+                            name = 'Tsuyoshi Murakami'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:https://github.com/tmurakami/btkt.git'
+                        developerConnection = 'scm:git:ssh://github.com/tmurakami/btkt.git'
+                        url = 'https://github.com/tmurakami/btkt'
+                    }
+                }
+            }
         }
         fromPreset(presets.js, 'js') {
             compilations.main {
