@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: 'com.moowork.node'
 apply plugin: 'maven-publish'
@@ -30,7 +32,28 @@ kotlin {
                 }
             }
         }
-        fromPreset(presets.linuxX64, 'linuxX64')
+        def candidates = new HashMap<OperatingSystem, String>()
+        candidates[OperatingSystem.LINUX] = 'linuxX64'
+        candidates[OperatingSystem.MAC_OS] = 'macosX64'
+        candidates[OperatingSystem.WINDOWS] = 'mingwX64'
+        def nativeTarget = candidates.remove(OperatingSystem.current()).with {
+            fromPreset(presets[it], it) {
+                compilations.all {
+                    kotlinSourceSets.each {
+                        it.kotlin.srcDirs = ["src/native${name.capitalize()}/kotlin"]
+                    }
+                }
+            }
+        }
+        if (project.hasProperty('morePlatforms')) {
+            (candidates.values() + ['androidNativeArm32', 'androidNativeArm64']).each {
+                fromPreset(presets[it], it) {
+                    compilations.all {
+                        nativeTarget.compilations[name].kotlinSourceSets.each { source it }
+                    }
+                }
+            }
+        }
     }
     sourceSets {
         commonMain {
