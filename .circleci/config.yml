@@ -2,7 +2,7 @@ version: 2
 
 references:
   cache_key: &cache_key
-    v2-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+    v3-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
 jobs:
   build:
@@ -16,8 +16,11 @@ jobs:
       - restore_cache:
           key: *cache_key
       - run:
+          name: Assemble
+          command: ./gradlew assemble -PmorePlatforms
+      - run:
           name: Run Lint and Tests
-          command: ./gradlew ktlint check -PmorePlatforms
+          command: ./gradlew ktlint check
       - save_cache:
           key: *cache_key
           paths:
