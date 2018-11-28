@@ -40,37 +40,32 @@ actual val Int.highestOneBit: Int
         return x - (x ushr 1)
     }
 
-// Robert Harley's algorithm
 // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
-// The entries shown as `-1` are never used.
-private val NLZ_TABLE = intArrayOf(
-    32, 31, -1, 16, -1, 30, 3, -1, 15, -1, -1, -1, 29, 10, 2, -1,
-    -1, -1, 12, 14, 21, -1, 19, -1, -1, 28, -1, 25, -1, 9, 1, -1,
-    17, -1, 4, -1, -1, -1, 11, -1, 13, 22, 20, -1, 26, -1, -1, 18,
-    5, -1, -1, 23, -1, 27, -1, 6, -1, 24, 7, -1, 8, -1, 0, -1
-)
 // TODO if Kotlin drops support for ECMAScript 5.1, we may use `Math.clz32()`.
 actual val Int.leadingZeros: Int
     get() {
+        if (this <= 0) return inv() shr 26 and 32
         var x = this
-        x = x or (x shr 1)
-        x = x or (x shr 2)
-        x = x or (x shr 4)
-        x = x or (x shr 8)
-        x = x or (x shr 16)
-        return NLZ_TABLE[x * 0x06EB14F9 ushr 26]
+        var n = 1
+        if (x shr 16 == 0) run { n += 16; x = x shl 16 }
+        if (x shr 24 == 0) run { n += 8; x = x shl 8 }
+        if (x shr 28 == 0) run { n += 4; x = x shl 4 }
+        if (x shr 30 == 0) run { n += 2; x = x shl 2 }
+        return n - (x ushr 31)
     }
 
-// David Seal's algorithm
 // http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
-// The entries shown as `-1` are never used.
-private val NTZ_TABLE = intArrayOf(
-    32, 0, 1, 12, 2, 6, -1, 13, 3, -1, 7, -1, -1, -1, -1, 14,
-    10, 4, -1, -1, 8, -1, -1, 25, -1, -1, -1, -1, -1, 21, 27, 15,
-    31, 11, 5, -1, -1, -1, -1, -1, 9, -1, -1, 24, -1, -1, 20, 26,
-    30, -1, -1, -1, -1, 23, -1, 19, 29, -1, 22, 18, 28, 17, 16, -1
-)
-actual val Int.trailingZeros: Int get() = NTZ_TABLE[lowestOneBit * 0x0450FBAF ushr 26]
+actual val Int.trailingZeros: Int
+    get() {
+        if (this == 0) return 32
+        var x = this
+        var n = 31
+        var y = x shl 16; if (y != 0) run { n -= 16; x = y }
+        y = x shl 8; if (y != 0) run { n -= 8; x = y }
+        y = x shl 4; if (y != 0) run { n -= 4; x = y }
+        y = x shl 2; if (y != 0) run { n -= 2; x = y }
+        return n - (x shl 1 ushr 31)
+    }
 
 // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
 actual fun Int.reverse(): Int {

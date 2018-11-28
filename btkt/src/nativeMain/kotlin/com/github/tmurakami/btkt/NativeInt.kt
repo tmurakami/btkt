@@ -46,7 +46,7 @@ actual val Int.highestOneBit: Int
 actual val Int.leadingZeros: Int
     get() = when {
         this < 0 -> 0
-        else -> 1054 - ((toDouble() + 0.5).toBits() shr 52).toInt()
+        else -> 1054 - ((toDouble() + 0.5).toRawBits() shr 52).toInt()
     }
 
 actual val Int.trailingZeros: Int get() = if (this == 0) 32 else ffs(this) - 1

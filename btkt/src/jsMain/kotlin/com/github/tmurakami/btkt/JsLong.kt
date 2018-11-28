@@ -18,75 +18,48 @@
 
 package com.github.tmurakami.btkt
 
-actual inline val Long.oneBits: Int
-    get() = let {
-        val highBits: Int = js("it").high_
-        val lowBits: Int = js("it").low_
-        highBits.oneBits + lowBits.oneBits
-    }
+@PublishedApi
+internal inline val Long.high_: Int
+    get() = let { js("it").high_ }
+
+actual inline val Long.oneBits: Int get() = high_.oneBits + toInt().oneBits
 
 actual val Long.highestOneBit: Long
-    get() = let {
-        when (val highBits: Int = js("it").high_) {
-            0 -> {
-                val lowBits: Int = js("it").low_
-                lowBits.highestOneBit.toLong()
-            }
-            else -> js("Kotlin").Long.fromBits(0, highBits.highestOneBit)
-        }
+    get() = when (val highBits = high_) {
+        0 -> toInt().highestOneBit.toLong()
+        else -> js("Kotlin").Long.fromBits(0, highBits.highestOneBit)
     }
 
 actual val Long.lowestOneBit: Long
-    get() = let {
-        when (val lowBits: Int = js("it").low_) {
-            0 -> {
-                val highBits: Int = js("it").high_
-                js("Kotlin").Long.fromBits(0, highBits.lowestOneBit)
-            }
-            else -> lowBits.lowestOneBit.toLong()
-        }
+    get() = when (val lowBits = toInt()) {
+        0 -> js("Kotlin").Long.fromBits(0, high_.lowestOneBit)
+        else -> lowBits.lowestOneBit.toLong()
     }
 
 actual val Long.leadingZeros: Int
-    get() = let {
-        when (val highBits: Int = js("it").high_) {
-            0 -> {
-                val lowBits: Int = js("it").low_
-                32 + lowBits.leadingZeros
-            }
-            else -> highBits.leadingZeros
-        }
+    get() = when (val highBits = high_) {
+        0 -> 32 + toInt().leadingZeros
+        else -> highBits.leadingZeros
     }
 
 actual val Long.trailingZeros: Int
-    get() = let {
-        when (val lowBits: Int = js("it").low_) {
-            0 -> {
-                val highBits: Int = js("it").high_
-                32 + highBits.trailingZeros
-            }
-            else -> lowBits.trailingZeros
-        }
+    get() = when (val lowBits = toInt()) {
+        0 -> 32 + high_.trailingZeros
+        else -> lowBits.trailingZeros
     }
 
-actual inline fun Long.reverse(): Long = let {
-    val highBits: Int = js("it").high_
-    val lowBits: Int = js("it").low_
-    js("Kotlin").Long.fromBits(highBits.reverse(), lowBits.reverse())
-}
+actual inline fun Long.reverse(): Long =
+    js("Kotlin").Long.fromBits(high_.reverse(), toInt().reverse())
 
-actual inline fun Long.reverseBytes(): Long = let {
-    val highBits: Int = js("it").high_
-    val lowBits: Int = js("it").low_
-    js("Kotlin").Long.fromBits(highBits.reverseBytes(), lowBits.reverseBytes())
-}
+actual inline fun Long.reverseBytes(): Long =
+    js("Kotlin").Long.fromBits(high_.reverseBytes(), toInt().reverseBytes())
 
 actual inline infix fun Long.rol(bitCount: Int): Long = ror(-bitCount)
 
-actual infix fun Long.ror(bitCount: Int): Long = let {
-    val highBits: Int = js("it").high_
-    val lowBits: Int = js("it").low_
+actual infix fun Long.ror(bitCount: Int): Long {
+    val highBits = high_
+    val lowBits = toInt()
     val a = highBits ushr bitCount or (lowBits shl -bitCount)
     val b = lowBits ushr bitCount or (highBits shl -bitCount)
-    if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
+    return if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
 }
