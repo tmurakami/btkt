@@ -18,6 +18,8 @@
 
 package com.github.tmurakami.btkt
 
+import platform.posix.ffs
+
 // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
 actual val Long.oneBits: Int
     get() {
@@ -47,15 +49,21 @@ actual val Long.highestOneBit: Long
 actual inline val Long.lowestOneBit: Long get() = and(-this)
 
 actual val Long.leadingZeros: Int
-    get() = when (val highBits = ushr(32).toInt()) {
-        0 -> 32 + toInt().leadingZeros
-        else -> highBits.leadingZeros
+    get() {
+        if (this < 0L) return 0
+        if (this == 0L) return 64
+        val highBits = ushr(32).toInt()
+        if (highBits != 0) return 1054 - ((highBits.toDouble() + 0.5).toRawBits() shr 52).toInt()
+        val lowBits = toInt()
+        if (lowBits < 0) return 32
+        return 1086 - ((lowBits.toDouble() + 0.5).toRawBits() shr 52).toInt()
     }
 
 actual val Long.trailingZeros: Int
-    get() = when (val lowBits = toInt()) {
-        0 -> 32 + ushr(32).toInt().trailingZeros
-        else -> lowBits.trailingZeros
+    get() {
+        if (this == 0L) return 64
+        val lowBits = toInt()
+        return if (lowBits == 0) 31 + ffs(ushr(32).toInt()) else ffs(lowBits) - 1
     }
 
 // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
