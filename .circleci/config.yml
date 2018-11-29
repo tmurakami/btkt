@@ -12,6 +12,8 @@ jobs:
       - restore_cache:
           keys:
             - v1-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - v1-{{ checksum "build.gradle" }}-
+            - v1-
       - run:
           name: Assemble
           command: ./gradlew assemble -PmorePlatforms
