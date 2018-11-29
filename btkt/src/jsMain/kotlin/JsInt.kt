@@ -16,9 +16,9 @@
 
 package com.github.tmurakami.btkt
 
-// http://www.hackersdelight.org/hdcodetxt/pop.c.txt
 actual val Int.oneBits: Int
     get() {
+        // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
         var x = this
         x -= x shr 1 and 0x55555555
         x = (x and 0x33333333) + (x shr 2 and 0x33333333)
@@ -28,9 +28,9 @@ actual val Int.oneBits: Int
         return x and 0x3F
     }
 
-// http://www.hackersdelight.org/hdcodetxt/flp2.c.txt
 actual val Int.highestOneBit: Int
     get() {
+        // http://www.hackersdelight.org/hdcodetxt/flp2.c.txt
         var x = this
         x = x or (x shr 1)
         x = x or (x shr 2)
@@ -40,10 +40,11 @@ actual val Int.highestOneBit: Int
         return x - (x ushr 1)
     }
 
-// http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
-// TODO if Kotlin drops support for ECMAScript 5.1, we may use `Math.clz32()`.
+@Suppress("UnsafeCastFromDynamic", "ReplaceSingleLineLet")
 actual val Int.leadingZeros: Int
     get() {
+        if (js("Math.clz32")) return let { js("Math.clz32(it)") }
+        // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
         if (this <= 0) return inv() shr 26 and 32
         var x = this
         var n = 1
@@ -54,9 +55,9 @@ actual val Int.leadingZeros: Int
         return n - (x ushr 31)
     }
 
-// http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
 actual val Int.trailingZeros: Int
     get() {
+        // http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
         if (this == 0) return 32
         var x = this
         var n = 31
@@ -67,8 +68,8 @@ actual val Int.trailingZeros: Int
         return n - (x shl 1 ushr 31)
     }
 
-// http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
 actual fun Int.reverse(): Int {
+    // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
     var x = this
     x = x and 0x55555555 shl 1 or (x ushr 1 and 0x55555555)
     x = x and 0x33333333 shl 2 or (x ushr 2 and 0x33333333)
@@ -76,6 +77,7 @@ actual fun Int.reverse(): Int {
     return x shl 24 or (x and 0xFF00 shl 8) or (x ushr 8 and 0xFF00) or (x ushr 24)
 }
 
-// http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
-actual fun Int.reverseBytes(): Int =
-    shl(24) or (and(0xFF00) shl 8) or (ushr(8) and 0xFF00) or ushr(24)
+actual fun Int.reverseBytes(): Int {
+    // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
+    return shl(24) or (and(0xFF00) shl 8) or (ushr(8) and 0xFF00) or ushr(24)
+}

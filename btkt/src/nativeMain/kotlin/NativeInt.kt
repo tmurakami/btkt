@@ -18,9 +18,9 @@ package com.github.tmurakami.btkt
 
 import platform.posix.ffs
 
-// http://www.hackersdelight.org/hdcodetxt/pop.c.txt
 actual val Int.oneBits: Int
     get() {
+        // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
         var x = this
         x -= x shr 1 and 0x55555555
         x = (x and 0x33333333) + (x shr 2 and 0x33333333)
@@ -30,9 +30,9 @@ actual val Int.oneBits: Int
         return x and 0x3F
     }
 
-// http://www.hackersdelight.org/hdcodetxt/flp2.c.txt
 actual val Int.highestOneBit: Int
     get() {
+        // http://www.hackersdelight.org/hdcodetxt/flp2.c.txt
         var x = this
         x = x or (x shr 1)
         x = x or (x shr 2)
@@ -42,17 +42,17 @@ actual val Int.highestOneBit: Int
         return x - (x ushr 1)
     }
 
-// http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
 actual val Int.leadingZeros: Int
-    get() = when {
-        this < 0 -> 0
-        else -> 1054 - ((toDouble() + 0.5).toRawBits() shr 52).toInt()
+    get() {
+        if (this < 0) return 0
+        // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
+        return 1054 - ((toDouble() + 0.5).toRawBits() shr 52).toInt()
     }
 
 actual val Int.trailingZeros: Int get() = if (this == 0) 32 else ffs(this) - 1
 
-// http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
 actual fun Int.reverse(): Int {
+    // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
     var x = this
     x = x and 0x55555555 shl 1 or (x ushr 1 and 0x55555555)
     x = x and 0x33333333 shl 2 or (x ushr 2 and 0x33333333)
@@ -60,6 +60,7 @@ actual fun Int.reverse(): Int {
     return x shl 24 or (x and 0xFF00 shl 8) or (x ushr 8 and 0xFF00) or (x ushr 24)
 }
 
-// http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
-actual fun Int.reverseBytes(): Int =
-    shl(24) or (and(0xFF00) shl 8) or (ushr(8) and 0xFF00) or ushr(24)
+actual fun Int.reverseBytes(): Int {
+    // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
+    return shl(24) or (and(0xFF00) shl 8) or (ushr(8) and 0xFF00) or ushr(24)
+}
