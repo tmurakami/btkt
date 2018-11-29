@@ -2,7 +2,7 @@ version: 2
 
 references:
   cache_key: &cache_key
-    v4-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+    v5-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
 jobs:
   build:
@@ -27,7 +27,6 @@ jobs:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
             - ~/.konan/dependencies
-            - btkt/node_modules
       - store_artifacts:
           path: btkt/build/reports
       - store_test_results:
