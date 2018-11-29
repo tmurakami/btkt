@@ -11,10 +11,10 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "btkt/package-lock.json" }}
-            - v1-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-            - v1-{{ checksum "build.gradle" }}
-            - v1
+            - v7-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "btkt/package-lock.json" }}
+            - v7-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - v7-{{ checksum "build.gradle" }}
+            - v7
       - run:
           name: Assemble
           command: ./gradlew assemble -PmorePlatforms
@@ -22,7 +22,7 @@ jobs:
           name: Run Lint and Tests
           command: ./gradlew check
       - save_cache:
-          key: v1-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "btkt/package-lock.json" }}
+          key: v7-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "btkt/package-lock.json" }}
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
