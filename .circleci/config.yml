@@ -2,7 +2,7 @@ version: 2
 
 references:
   cache_key: &cache_key
-    v3-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+    v4-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
 jobs:
   build:
@@ -20,13 +20,14 @@ jobs:
           command: ./gradlew assemble -PmorePlatforms
       - run:
           name: Run Lint and Tests
-          command: ./gradlew ktlint check
+          command: ./gradlew check
       - save_cache:
           key: *cache_key
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
             - ~/.konan/dependencies
+            - btkt/node_modules
       - store_artifacts:
           path: btkt/build/reports
       - store_test_results:
