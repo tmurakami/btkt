@@ -161,10 +161,14 @@ task populateNodeModules(type: Copy, dependsOn: compileKotlinJs) {
 }
 
 task installMocha(type: NpmTask) {
+    inputs.file 'package-lock.json'
+    outputs.dir 'node_modules/mocha'
     args = ['install', 'mocha']
 }
 
 task runMocha(type: NodeTask, dependsOn: [compileTestKotlinJs, populateNodeModules, installMocha]) {
+    inputs.files compileKotlinJs, compileTestKotlinJs, populateNodeModules, installMocha
+    outputs.upToDateWhen { true }
     script = file('node_modules/mocha/bin/mocha')
     args = [compileTestKotlinJs.outputFile]
 }
