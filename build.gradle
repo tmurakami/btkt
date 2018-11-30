@@ -1,5 +1,5 @@
 buildscript {
-    ext.versions = [node: '10.13.0',]
+    ext.versions = [node: '10.13.0']
     repositories {
         jcenter()
         maven { url 'https://plugins.gradle.org/m2/' }

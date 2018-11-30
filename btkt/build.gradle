@@ -129,9 +129,7 @@ repositories.withType(IvyArtifactRepository) { metadataSources { artifact() } }
 task populateNodeModules(type: Copy, dependsOn: compileKotlinJs) {
     from compileKotlinJs.destinationDir
     doFirst {
-        configurations.jsTestRuntimeClasspath.each {
-            from zipTree(it.absolutePath).matching { include '*.js' }
-        }
+        configurations.jsTestRuntimeClasspath.each { from zipTree(it).matching { include '*.js' } }
     }
     into "$buildDir/node_modules"
 }
