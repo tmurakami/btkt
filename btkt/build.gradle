@@ -74,7 +74,9 @@ kotlin {
             }
         }
         if (project.hasProperty('morePlatforms')) {
-            (candidates.values() + ['androidNativeArm32', 'androidNativeArm64']).each {
+            (candidates.values() + ['androidNativeArm32', 'androidNativeArm64',
+                                    'iosArm32', 'iosArm64', 'iosX64',
+                                    'wasm32']).each {
                 fromPreset(presets[it], it) {
                     compilations.all {
                         nativeTarget.compilations[name].kotlinSourceSets.each { source it }

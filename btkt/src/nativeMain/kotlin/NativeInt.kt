@@ -16,8 +16,6 @@
 
 package com.github.tmurakami.btkt
 
-import platform.posix.ffs
-
 actual val Int.oneBits: Int
     get() {
         // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
@@ -49,7 +47,18 @@ actual val Int.leadingZeros: Int
         return 1054 - ((toDouble() + 0.5).toRawBits() shr 52).toInt()
     }
 
-actual val Int.trailingZeros: Int get() = if (this == 0) 32 else ffs(this) - 1
+actual val Int.trailingZeros: Int
+    get() {
+        // http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
+        if (this == 0) return 32
+        var x = this
+        var n = 31
+        var y = x shl 16; if (y != 0) run { n -= 16; x = y }
+        y = x shl 8; if (y != 0) run { n -= 8; x = y }
+        y = x shl 4; if (y != 0) run { n -= 4; x = y }
+        y = x shl 2; if (y != 0) run { n -= 2; x = y }
+        return n - (x shl 1 ushr 31)
+    }
 
 actual fun Int.reverse(): Int {
     // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt

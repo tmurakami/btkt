@@ -18,8 +18,6 @@
 
 package com.github.tmurakami.btkt
 
-import platform.posix.ffs
-
 actual val Long.oneBits: Int
     get() {
         // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
@@ -62,9 +60,16 @@ actual val Long.leadingZeros: Int
 
 actual val Long.trailingZeros: Int
     get() {
+        // http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
         if (this == 0L) return 64
-        val lowBits = toInt()
-        return if (lowBits == 0) 31 + ffs(ushr(32).toInt()) else ffs(lowBits) - 1
+        var x = toInt()
+        var n = 63
+        if (x == 0) x = ushr(32).toInt() else n -= 32
+        var y = x shl 16; if (y != 0) run { n -= 16; x = y }
+        y = x shl 8; if (y != 0) run { n -= 8; x = y }
+        y = x shl 4; if (y != 0) run { n -= 4; x = y }
+        y = x shl 2; if (y != 0) run { n -= 2; x = y }
+        return n - (x shl 1 ushr 31)
     }
 
 actual fun Long.reverse(): Long {

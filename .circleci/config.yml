@@ -11,9 +11,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-            - v1-{{ checksum "build.gradle" }}-
-            - v1-
+            - v2-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - v2-{{ checksum "build.gradle" }}-
+            - v2-
       - run:
           name: Assemble
           command: ./gradlew assemble -PmorePlatforms
@@ -21,7 +21,7 @@ jobs:
           name: Run Lint and Tests
           command: ./gradlew check
       - save_cache:
-          key: v1-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          key: v2-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
