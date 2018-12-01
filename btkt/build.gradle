@@ -73,7 +73,7 @@ kotlin {
                 }
             }
         }
-        if (project.hasProperty('morePlatforms')) {
+        if ((System.env.CI ?: System.env.JITPACK) == 'true') {
             (candidates.values() + ['androidNativeArm32', 'androidNativeArm64',
                                     'iosArm32', 'iosArm64', 'iosX64',
                                     'wasm32']).each {
