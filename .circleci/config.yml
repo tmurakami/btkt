@@ -15,10 +15,7 @@ jobs:
             - v2-{{ checksum "build.gradle" }}-
             - v2-
       - run:
-          name: Assemble
-          command: ./gradlew assemble -PmorePlatforms
-      - run:
-          name: Run Lint and Tests
+          name: Run Tests
           command: ./gradlew check
       - save_cache:
           key: v2-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
