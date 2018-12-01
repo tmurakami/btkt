@@ -12,6 +12,8 @@ jobs:
       - restore_cache:
           keys:
             - v3-{{ checksum "build.gradle" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+            - v3-{{ checksum "build.gradle" }}-
+            - v3-
       - run:
           name: Run Tests
           command: ./gradlew check
