@@ -1,5 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 apply plugin: 'com.moowork.node'
 apply plugin: 'maven-publish'
@@ -60,12 +58,9 @@ kotlin {
                 }
             }
         }
-        def candidates = new HashMap<OperatingSystem, String>()
-        candidates[OperatingSystem.LINUX] = 'linuxX64'
-        candidates[OperatingSystem.MAC_OS] = 'macosX64'
-        candidates[OperatingSystem.WINDOWS] = 'mingwX64'
-        def nativeTarget = candidates.remove(OperatingSystem.current()).with {
-            fromPreset(presets[it], it) {
+        def host = org.jetbrains.kotlin.konan.target.HostManager.host
+        def nativeTarget = presets.find { it.properties.konanTarget == host }.with {
+            fromPreset(it, it.name) {
                 compilations.all {
                     kotlinSourceSets.each {
                         it.kotlin.srcDirs = ["src/native${name.capitalize()}/kotlin"]
@@ -74,10 +69,8 @@ kotlin {
             }
         }
         if ((System.env.CI ?: System.env.JITPACK) == 'true') {
-            (candidates.values() + ['androidNativeArm32', 'androidNativeArm64',
-                                    'iosArm32', 'iosArm64', 'iosX64',
-                                    'wasm32']).each {
-                fromPreset(presets[it], it) {
+            presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
+                fromPreset(it, it.name) {
                     compilations.all {
                         nativeTarget.compilations[name].kotlinSourceSets.each { source it }
                     }
