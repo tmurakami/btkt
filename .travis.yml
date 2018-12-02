@@ -7,7 +7,7 @@ before_cache:
   - rm -f  $HOME/.gradle/caches/*/fileContent/fileContent.lock
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
 
-deploy:
+deploy_settings: &deploy_settings
   provider: script
   skip_cleanup: true
   on:
@@ -26,6 +26,7 @@ matrix:
           - $HOME/.gradle/wrapper/
           - $HOME/.konan/dependencies/
       deploy:
+        <<: *deploy_settings
         script: ./gradlew publish
     - os: osx
       osx_image: xcode10.1
@@ -38,6 +39,7 @@ matrix:
           - $HOME/.gradle/wrapper/
           - $HOME/.konan/dependencies/
       deploy:
+        <<: *deploy_settings
         script: ./gradlew publishMacosX64PublicationToMavenRepository
                           publishIosArm32PublicationToMavenRepository
                           publishIosArm64PublicationToMavenRepository
@@ -51,8 +53,9 @@ matrix:
       script: ./gradlew.bat mingwX64Test --no-daemon
       cache:
         directories:
-          - $HOME\.gradle\caches\
-          - $HOME\.gradle\wrapper\
-          - $HOME\.konan\dependencies\
+          - %HOME%\.gradle\caches\
+          - %HOME%\.gradle\wrapper\
+          - %HOME%\.konan\dependencies\
       deploy:
+        <<: *deploy_settings
         script: ./gradlew.bat publishMingwX64PublicationToMavenRepository --no-daemon
