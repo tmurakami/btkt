@@ -4,16 +4,16 @@ matrix:
       language: java
       jdk: oraclejdk8
       script:
-        - ./gradlew jsTest jvmTest linuxX64Test --no-daemon
-    - os: windows
-      language: shell
-      before_install:
-        - choco install jdk8 -y -params "installdir=c:\\java8"
-        - export JAVA_HOME="c:\\java8"
-      script:
-        - ./gradlew.bat mingwX64Test --no-daemon
+        - ./gradlew check --no-daemon
     - os: osx
       language: java
       jdk: oraclejdk8
       script:
         - ./gradlew macosX64Test --no-daemon
+    - os: windows
+      language: shell
+      before_install:
+        - choco install -y jdk8 -params 'installdir=c:\\java8'
+        - export JAVA_HOME='c:\\java8'
+      script:
+        - ./gradlew.bat mingwX64Test --no-daemon
