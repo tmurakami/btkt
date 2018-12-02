@@ -1,7 +1,8 @@
 references:
   cache: &cache
     directories:
-      - $HOME/.gradle/caches/
+      - $HOME/.gradle/caches/jars-3/
+      - $HOME/.gradle/caches/modules-2/
       - $HOME/.gradle/wrapper/
       - $HOME/.konan/dependencies/
   deploy: &deploy
@@ -10,13 +11,7 @@ references:
     skip_cleanup: true
 
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-  - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.*
-  - rm -f  $HOME/.gradle/caches/journal-1/file-access.bin
-  - rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
-  - rm -f  $HOME/.gradle/caches/*/fileContent/fileContent.lock
-  - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
+  - rm -f  $HOME/.gradle/caches/*/*.lock
 
 matrix:
   include:
@@ -51,6 +46,11 @@ matrix:
         - choco install -y jdk11 -params 'installdir=c:\\java11'
       install: true
       script: ./gradlew.bat mingwX64Test --no-daemon
+      cache:
+        directories:
+          - $HOME/.gradle/caches/jars-3/
+          - $HOME/.gradle/caches/modules-2/
+          - $HOME/.gradle/wrapper/
       deploy:
         provider: script
         <<: *deploy
