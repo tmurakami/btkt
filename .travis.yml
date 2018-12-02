@@ -11,26 +11,44 @@ save_cache: &save_cache
       - $HOME/.gradle/wrapper/
       - $HOME/.konan/dependencies/
 
+deploy_settings: &deploy_settings
+  skip_cleanup: true
+  on:
+    tags: true
+
 matrix:
   include:
     - os: linux
       language: java
-      jdk: openjdk8
+      jdk: oraclejdk11
       install: true
-      script:
-        - ./gradlew check --no-daemon
+      script: ./gradlew check
       <<: *save_cache
+      deploy:
+        provider: script
+        <<: *deploy_settings
+        script: ./gradlew publish
     - os: osx
+      osx_image: xcode10.1
       language: java
       install: true
-      script:
-        - ./gradlew macosX64Test --no-daemon
+      script: ./gradlew macosX64Test
       <<: *save_cache
+      deploy:
+        provider: script
+        <<: *deploy_settings
+        script: ./gradlew publishMacosX64PublicationToMavenRepository
+                          publishIosArm32PublicationToMavenRepository
+                          publishIosArm64PublicationToMavenRepository
+                          publishIosX64PublicationToMavenRepository
     - os: windows
       language: shell
       before_install:
-        - choco install -y jdk8 -params 'installdir=c:\\java8'
-        - export JAVA_HOME='c:\\java8'
+        - choco install -y jdk11 -params 'installdir=c:\\java11'
+        - export JAVA_HOME='c:\\jdk11'
       install: true
-      script:
-        - ./gradlew.bat mingwX64Test --no-daemon
+      script: ./gradlew.bat mingwX64Test --no-daemon
+      deploy:
+        provider: script
+        <<: *deploy_settings
+        script: ./gradlew.bat publishMingwX64PublicationToMavenRepository --no-daemon
