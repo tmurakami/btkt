@@ -1,7 +1,7 @@
 deploy_settings: &deploy_settings
-  skip_cleanup: true
   on:
     tags: true
+  skip_cleanup: true
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
