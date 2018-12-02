@@ -45,13 +45,8 @@ matrix:
       before_install:
         - choco install -y jdk11 -params 'installdir=c:\\java11'
       install: true
-      script: ./gradlew.bat mingwX64Test --no-daemon
-      cache:
-        directories:
-          - $HOME/.gradle/caches/jars-3/
-          - $HOME/.gradle/caches/modules-2/
-          - $HOME/.gradle/wrapper/
+      script: ./gradlew.bat mingwX64Test
       deploy:
         provider: script
         <<: *deploy
-        script: ./gradlew.bat publishMingwX64PublicationToMavenRepository --no-daemon
+        script: ./gradlew.bat publishMingwX64PublicationToMavenRepository
