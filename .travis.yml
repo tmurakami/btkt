@@ -54,9 +54,9 @@ matrix:
       script: ./gradlew.bat mingwX64Test --no-daemon
       cache:
         directories:
-          - %HOME%/.gradle/caches/
-          - %HOME%/.gradle/wrapper/
-          - %HOME%/.konan/dependencies/
+          - "%HOME%/.gradle/caches/"
+          - "%HOME%/.gradle/wrapper/"
+          - "%HOME%/.konan/dependencies/"
       deploy:
         provider: script
         <<: *deploy_settings
