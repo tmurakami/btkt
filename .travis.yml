@@ -1,13 +1,23 @@
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.konan/dependencies/
+
 matrix:
   include:
     - os: linux
       language: java
-      jdk: oraclejdk8
+      jdk: openjdk8
+      install: true
       script:
         - ./gradlew check --no-daemon
     - os: osx
       language: java
-      jdk: oraclejdk8
+      install: true
       script:
         - ./gradlew macosX64Test --no-daemon
     - os: windows
@@ -15,5 +25,6 @@ matrix:
       before_install:
         - choco install -y jdk8 -params 'installdir=c:\\java8'
         - export JAVA_HOME='c:\\java8'
+      install: true
       script:
         - ./gradlew.bat mingwX64Test --no-daemon
