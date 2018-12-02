@@ -5,6 +5,8 @@ save_cache: &save_cache
     - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.*
     - rm -f  $HOME/.gradle/caches/journal-1/file-access.bin
     - rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
+    - rm -f  $HOME/.gradle/caches/*/fileContent/fileContent.lock
+    - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
   cache:
     directories:
       - $HOME/.gradle/caches/
