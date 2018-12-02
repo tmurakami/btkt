@@ -1,3 +1,8 @@
+deploy_settings: &deploy_settings
+  on:
+    tags: true
+  skip_cleanup: true
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -21,9 +26,7 @@ matrix:
           - $HOME/.konan/dependencies/
       deploy:
         provider: script
-        on:
-          tags: true
-        skip_cleanup: true
+        <<: *deploy_settings
         script: ./gradlew publish
     - os: osx
       osx_image: xcode10.1
@@ -37,9 +40,7 @@ matrix:
           - $HOME/.konan/dependencies/
       deploy:
         provider: script
-        on:
-          tags: true
-        skip_cleanup: true
+        <<: *deploy_settings
         script: ./gradlew publishMacosX64PublicationToMavenRepository
                           publishIosArm32PublicationToMavenRepository
                           publishIosArm64PublicationToMavenRepository
@@ -51,9 +52,12 @@ matrix:
         - export JAVA_HOME='c:\\java11'
       install: true
       script: ./gradlew.bat mingwX64Test --no-daemon
+      cache:
+        directories:
+          - %HOME%/.gradle/caches/
+          - %HOME%/.gradle/wrapper/
+          - %HOME%/.konan/dependencies/
       deploy:
         provider: script
-        on:
-          tags: true
-        skip_cleanup: true
+        <<: *deploy_settings
         script: ./gradlew.bat publishMingwX64PublicationToMavenRepository --no-daemon
