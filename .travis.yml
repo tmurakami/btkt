@@ -50,6 +50,7 @@ matrix:
         - export JAVA_HOME='c:\\java11'
       install: true
       script: ./gradlew.bat mingwX64Test --no-daemon
+      <<: *save_cache
       deploy:
         provider: script
         <<: *deploy_settings
