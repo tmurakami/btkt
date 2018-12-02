@@ -1,3 +1,8 @@
+deploy_settings: &deploy_settings
+  skip_cleanup: true
+  on:
+    tags: true
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -6,12 +11,6 @@ before_cache:
   - rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
   - rm -f  $HOME/.gradle/caches/*/fileContent/fileContent.lock
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
-
-deploy_settings: &deploy_settings
-  provider: script
-  skip_cleanup: true
-  on:
-    tags: true
 
 matrix:
   include:
@@ -26,6 +25,7 @@ matrix:
           - $HOME/.gradle/wrapper/
           - $HOME/.konan/dependencies/
       deploy:
+        provider: script
         <<: *deploy_settings
         script: ./gradlew publish
     - os: osx
@@ -39,6 +39,7 @@ matrix:
           - $HOME/.gradle/wrapper/
           - $HOME/.konan/dependencies/
       deploy:
+        provider: script
         <<: *deploy_settings
         script: ./gradlew publishMacosX64PublicationToMavenRepository
                           publishIosArm32PublicationToMavenRepository
@@ -57,5 +58,6 @@ matrix:
           - %HOME%\.gradle\wrapper\
           - %HOME%\.konan\dependencies\
       deploy:
+        provider: script
         <<: *deploy_settings
         script: ./gradlew.bat publishMingwX64PublicationToMavenRepository --no-daemon
