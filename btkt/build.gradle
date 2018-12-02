@@ -61,6 +61,9 @@ kotlin {
         def host = org.jetbrains.kotlin.konan.target.HostManager.host
         def nativeTarget = presets.find { it.properties.konanTarget == host }.with {
             fromPreset(it, it.name) {
+                mavenPublication {
+                    artifactId = "$project.name-${konanTarget.name.replace('_', '-')}"
+                }
                 compilations.all {
                     kotlinSourceSets.each {
                         it.kotlin.srcDirs = ["src/native${name.capitalize()}/kotlin"]
@@ -71,6 +74,9 @@ kotlin {
         if ((System.env.CI ?: System.env.JITPACK) == 'true') {
             presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
                 fromPreset(it, it.name) {
+                    mavenPublication {
+                        artifactId = "$project.name-${konanTarget.name.replace('_', '-')}"
+                    }
                     compilations.all {
                         nativeTarget.compilations[name].kotlinSourceSets.each { source it }
                     }
