@@ -1,5 +1,10 @@
 references:
-  deploy_settings: &deploy_settings
+  cache: &cache
+    directories:
+      - $HOME/.gradle/caches/
+      - $HOME/.gradle/wrapper/
+      - $HOME/.konan/dependencies/
+  deploy: &deploy
     on:
       tags: true
     skip_cleanup: true
@@ -12,11 +17,6 @@ before_cache:
   - rm -f  $HOME/.gradle/caches/journal-1/journal-1.lock
   - rm -f  $HOME/.gradle/caches/*/fileContent/fileContent.lock
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.konan/cache/
 
 matrix:
   include:
@@ -25,18 +25,20 @@ matrix:
       jdk: oraclejdk11
       install: true
       script: ./gradlew check
+      cache: *cache
       deploy:
         provider: script
-        <<: *deploy_settings
+        <<: *deploy
         script: ./gradlew publish
     - os: osx
       osx_image: xcode10.1
       language: java
       install: true
       script: ./gradlew macosX64Test
+      cache: *cache
       deploy:
         provider: script
-        <<: *deploy_settings
+        <<: *deploy
         script: ./gradlew publishMacosX64PublicationToMavenRepository
                           publishIosArm32PublicationToMavenRepository
                           publishIosArm64PublicationToMavenRepository
@@ -51,5 +53,5 @@ matrix:
       script: ./gradlew.bat mingwX64Test --no-daemon
       deploy:
         provider: script
-        <<: *deploy_settings
+        <<: *deploy
         script: ./gradlew.bat publishMingwX64PublicationToMavenRepository --no-daemon
