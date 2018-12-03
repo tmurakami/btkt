@@ -71,7 +71,7 @@ kotlin {
                 }
             }
         }
-        if (System.env.CI == 'true') {
+        if ((System.env.CI ?: 'false').toBoolean()) {
             presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
                 fromPreset(it, it.name) {
                     mavenPublication {
