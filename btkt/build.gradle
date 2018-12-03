@@ -12,8 +12,8 @@ kotlin {
             }
             mavenPublication {
                 pom {
-                    name = 'Bt.kt'
-                    description = 'A bit twiddling library for Kotlin'
+                    name = 'BT.kt'
+                    description = 'A Kotlin library that provides extensions for bit-twiddling'
                     url = 'https://github.com/tmurakami/btkt'
                     inceptionYear = '2018'
                     licenses {
@@ -71,7 +71,7 @@ kotlin {
                 }
             }
         }
-        if ((System.env.CI ?: System.env.JITPACK) == 'true') {
+        if (System.env.CI == 'true') {
             presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
                 fromPreset(it, it.name) {
                     mavenPublication {
@@ -148,10 +148,10 @@ task installJsTestDependencies(type: NpmTask) {
 
 task runMocha(type: NodeTask,
               dependsOn: [compileTestKotlinJs, populateNodeModules, installJsTestDependencies]) {
-    inputs.files([compileKotlinJs,
-                  compileTestKotlinJs,
-                  populateNodeModules,
-                  installJsTestDependencies])
+    inputs.files compileKotlinJs,
+                 compileTestKotlinJs,
+                 populateNodeModules,
+                 installJsTestDependencies
     outputs.upToDateWhen { true }
     script = file('node_modules/mocha/bin/mocha')
     def multiReportersConfig = file("$buildDir/mocha-multi-reporters-config.json")
