@@ -13,6 +13,7 @@ before_cache:
   - find $HOME/.gradle/caches/ -type f -name '*.bin' -exec rm -f {} \;
   - find $HOME/.gradle/caches/ -type f -name '*.lock' -exec rm -f {} \;
   - find $HOME/.gradle/caches/ -type f -name '*.properties' -exec rm -f {} \;
+  - rm -f $HOME/.gradle/caches/*/workerMain/gradle-worker.jar
 
 matrix:
   include:
