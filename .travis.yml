@@ -9,6 +9,10 @@ references:
       tags: true
     skip_cleanup: true
 
+before_cache:
+  - find $HOME/.gradle/caches/ -type f -name '*.bin' -exec rm -f {} \;
+  - find $HOME/.gradle/caches/ -type f -name '*.lock' -exec rm -f {} \;
+
 matrix:
   include:
     - os: linux
