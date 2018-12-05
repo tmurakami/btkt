@@ -188,7 +188,7 @@ publishing {
                 username System.env.BINTRAY_USER
                 password System.env.BINTRAY_API_KEY
             }
-            url 'https://api.bintray.com/maven/tmurakami/maven/btkt/'
+            url 'https://api.bintray.com/maven/tmurakami/maven/btkt/;publish=1'
         }
     }
 }
