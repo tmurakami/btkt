@@ -180,3 +180,15 @@ task jsTest(type: NodeTask,
             '--reporter-options', "configFile=$multiReportersConfig"]
 }
 check.dependsOn jsTest
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username System.env.BINTRAY_USER
+                password System.env.BINTRAY_API_KEY
+            }
+            url 'https://api.bintray.com/maven/tmurakami/maven/btkt/'
+        }
+    }
+}
