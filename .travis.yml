@@ -41,12 +41,11 @@ matrix:
     - os: windows
       language: shell
       env:
-        - JAVA_HOME=c:\\java11
-      before_install:
-        - dir "c:\\Program Files\\Java"
-        - sh -c "choco install -dfvy jdk11 -params 'installdir=c:\\java11'"
+        - JAVA_HOME="c:\\Program Files\\Java\\jdk1.8.0_192"
       install: true
-      script: ./gradlew.bat mingwX64Test --no-daemon
+      script:
+        - dir "c:\\Program Files\\Java\\"
+        - ./gradlew.bat mingwX64Test --no-daemon
       deploy:
         provider: script
         <<: *deploy
