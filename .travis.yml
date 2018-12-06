@@ -41,9 +41,9 @@ matrix:
     - os: windows
       language: shell
       env:
-        - JAVA_HOME=c:\\java11
+        - JAVA_HOME=c:\\java8
       before_install:
-        - choco install -dfvy jdk11 -params 'installdir=c:\\java11'
+        - choco install -dfvy jdk8 -params 'installdir=c:\\java8'
       install: true
       script: ./gradlew.bat mingwX64Test --no-daemon
       deploy:
