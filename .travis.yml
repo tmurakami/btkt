@@ -44,7 +44,7 @@ matrix:
         - JAVA_HOME="c:\\Program Files\\Java\\jdk1.8.0_192"
       install: true
       script:
-        - dir "c:\\Program Files\\Java\\"
+        - dir "c:\\Program Files\\"
         - ./gradlew.bat mingwX64Test --no-daemon
       deploy:
         provider: script
