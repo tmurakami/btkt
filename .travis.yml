@@ -43,7 +43,7 @@ matrix:
       env:
         - JAVA_HOME=c:\\java11
       before_install:
-        - choco install -y -d -v -f jdk11 -params 'installdir=c:\\java11'
+        - choco install -dfvy jdk11 -params 'installdir=c:\\java11'
       install: true
       script: ./gradlew.bat mingwX64Test --no-daemon
       deploy:
