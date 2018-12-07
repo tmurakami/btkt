@@ -20,6 +20,7 @@ jdk: openjdk11
 matrix:
   include:
     - os: linux
+      dist: xenial
       install: true
       script: ./gradlew check
       <<: *cache
@@ -40,6 +41,7 @@ matrix:
                           publishIosArm64PublicationToMavenRepository
                           publishIosX64PublicationToMavenRepository
     - os: linux
+      dist: xenial
       env:
         - GRADLE_OPTS=-Dorg.gradle.daemon=false
         - JAVA_HOME=c:\\jdk-11.0.1
@@ -50,7 +52,7 @@ matrix:
         - sudo apt-add-repository https://dl.winehq.org/wine-builds/ubuntu/
         - sudo apt-get update
         - sudo apt-get install -y --install-recommends winehq-stable
-        - curl -L -O https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
+        - wget -nc https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
         - wineboot
         - unzip openjdk-11.0.1_windows-x64_bin.zip -d $HOME/.wine/drive_c
       install: true
