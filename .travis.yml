@@ -42,11 +42,11 @@ matrix:
       language: shell
       env:
         - GRADLE_OPTS=-Dorg.gradle.daemon=false
-        - JAVA_HOME=/c/java11
-      before_install: choco install -dfvy jdk11 -params 'installdir=/c/java11'
+        - JAVA_HOME=c:\\java11
+      before_install: choco install -dfvy jdk11 -params 'installdir=c:\\java11'
       install: true
-      script: ./gradlew mingwX64Test
+      script: ./gradlew.bat mingwX64Test
       deploy:
         provider: script
         <<: *deploy
-        script: ./gradlew publishMingwX64PublicationToMavenRepository
+        script: ./gradlew.bat publishMingwX64PublicationToMavenRepository
