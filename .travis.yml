@@ -54,7 +54,7 @@ matrix:
         - wget -q https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
         - wineboot
         - unzip openjdk-11.0.1_windows-x64_bin.zip -d $HOME/.wine/drive_c
-      script: wine cmd /C gradlew.bat mingwX64Test
+      script: wine cmd /c gradlew.bat mingwX64Test
       before_cache:
         - rm -f $HOME/.wine/drive_c/users/$USER/.gradle/caches/modules-2/modules-2.lock
       cache:
@@ -66,4 +66,4 @@ matrix:
       deploy:
         provider: script
         <<: *deploy
-        script: wine cmd /C gradlew.bat publishMingwX64PublicationToMavenRepository
+        script: wine cmd /c gradlew.bat publishMingwX64PublicationToMavenRepository
