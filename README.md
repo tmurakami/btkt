@@ -1,9 +1,8 @@
 # BT.kt
 
-A Kotlin library that provides extensions for bit-twiddling. This
-library is based on material from [Hacker's Delight](http://www.hackersdelight.org/).
+[![Build Status](https://travis-ci.org/tmurakami/btkt.svg?branch=master)](https://travis-ci.org/tmurakami/btkt/)
 
-## Usage
+A Kotlin library that provides extensions for bit-twiddling.
 
 ```kotlin
 val x = 0b00010001_00110011_01010101_00000000
@@ -35,3 +34,5 @@ assertEquals(0b00110011_01010101_00000000_00010001, x.rol(8))
 // Rotate right 8 bits
 assertEquals(0b00000000_00010001_00110011_01010101, x.ror(8))
 ```
+
+This library is based on material from [Hacker's Delight](http://www.hackersdelight.org/).
