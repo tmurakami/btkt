@@ -40,15 +40,17 @@ matrix:
                           publishIosArm64PublicationToMavenRepository
                           publishIosX64PublicationToMavenRepository
     - os: linux
-      dist: xenial
-      env:
-        - JAVA_HOME=c:\\jdk-11.0.1
       before_install:
-        - sudo apt update
-        - sudo apt install -y wine64
+        - sudo dpkg --add-architecture i386
+        - wget -nc https://dl.winehq.org/wine-builds/Release.key
+        - sudo apt-key add Release.key
+        - sudo apt-add-repository https://dl.winehq.org/wine-builds/ubuntu/
+        - sudo apt-get update
+        - sudo apt-get install -y --install-recommends winehq-stable
         - curl -L -O https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
         - wineboot
         - unzip openjdk-11.0.1_windows-x64_bin.zip -d $HOME/.wine/drive_c
+        - export JAVA_HOME=c:\\jdk-11.0.1
       install: true
       script: wine cmd /C ./gradlew.bat mingwX64Test
       deploy:
