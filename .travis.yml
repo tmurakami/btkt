@@ -42,13 +42,12 @@ matrix:
       language: shell
       env:
         - JAVA_HOME=c:\\jdk-11.0.1
+        - PATH=%JAVA_HOME%\\bin;%PATH%
       before_install:
-        - cd /c
         - curl -L -O https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
-        - unzip openjdk-11.0.1_windows-x64_bin.zip
-        - export PATH=/c/jdk-11.0.1/bin:$PATH
+        - unzip openjdk-11.0.1_windows-x64_bin.zip -d /c
       install: true
-      script: ./gradlew.bat mingwX64Test --no-daemon --debug
+      script: ./gradlew.bat mingwX64Test --no-daemon
       deploy:
         provider: script
         <<: *deploy
