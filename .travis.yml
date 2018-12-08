@@ -44,6 +44,9 @@ matrix:
       env:
         - GRADLE_OPTS=-Dorg.gradle.daemon=false
         - JAVA_HOME=c:\jdk-11.0.1
+        - DRIVE_C=$HOME/.wine/drive_c
+        - JDK_DIR=$DRIVE_C/jdk-11.0.1
+        - USER_DIR=$DRIVE_C/users/$USER
       before_install:
         - sudo dpkg --add-architecture i386
         - wget -q https://dl.winehq.org/wine-builds/Release.key
@@ -53,20 +56,20 @@ matrix:
         - sudo apt-get install -qy winehq-stable
         - wineboot
         - |
-          if [ ! -e $HOME/.wine/drive_c/jdk-11.0.1/release ]; then
+          if [ ! -e $JDK_DIR/release ]; then
             wget -q https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
-            unzip openjdk-11.0.1_windows-x64_bin.zip -d $HOME/.wine/drive_c
+            unzip openjdk-11.0.1_windows-x64_bin.zip -d $DRIVE_C
           fi
       script: wine cmd /c gradlew.bat mingwX64Test
       before_cache:
-        - rm -f $HOME/.wine/drive_c/users/$USER/.gradle/caches/modules-2/modules-2.lock
+        - rm -f $USER_DIR/.gradle/caches/modules-2/modules-2.lock
       cache:
         directories:
-          - $HOME/.wine/drive_c/jdk-11.0.1/
-          - $HOME/.wine/drive_c/users/$USER/.gradle/caches/jars-3/
-          - $HOME/.wine/drive_c/users/$USER/.gradle/caches/modules-2/
-          - $HOME/.wine/drive_c/users/$USER/.gradle/wrapper/
-          - $HOME/.wine/drive_c/users/$USER/.konan/dependencies/
+          - $JDK_DIR
+          - $USER_DIR/.gradle/caches/jars-3/
+          - $USER_DIR/.gradle/caches/modules-2/
+          - $USER_DIR/.gradle/wrapper/
+          - $USER_DIR/.konan/dependencies/
       deploy:
         provider: script
         <<: *deploy
