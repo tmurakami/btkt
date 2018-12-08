@@ -52,9 +52,10 @@ matrix:
         - sudo apt-get update -q
         - sudo apt-get install -qy winehq-stable
         - wineboot
-        - if [ ! -d $HOME/.wine/drive_c/jdk-11.0.1/ ]; then
-            wget -q https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip;
-            unzip openjdk-11.0.1_windows-x64_bin.zip -d $HOME/.wine/drive_c;
+        - |
+          if [ ! -d $HOME/.wine/drive_c/jdk-11.0.1/ ]; then
+            wget -q https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
+            unzip openjdk-11.0.1_windows-x64_bin.zip -d $HOME/.wine/drive_c
           fi
       script: wine cmd /c gradlew.bat mingwX64Test
       before_cache:
