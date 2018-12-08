@@ -185,10 +185,10 @@ publishing {
     repositories {
         maven {
             credentials {
-                username System.env.BINTRAY_USER
+                username 'tmurakami'
                 password System.env.BINTRAY_API_KEY
             }
-            url 'https://api.bintray.com/maven/tmurakami/maven/btkt/;publish=1'
+            url "https://api.bintray.com/maven/tmurakami/maven/${project.name}/;publish=1"
         }
     }
 }
