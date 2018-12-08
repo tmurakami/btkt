@@ -1,5 +1,6 @@
 # BT.kt
 
+![Kotlin](https://img.shields.io/badge/Kotlin-1.3.11%2B-blue.svg)
 [![Build Status](https://travis-ci.org/tmurakami/btkt.svg?branch=master)](https://travis-ci.org/tmurakami/btkt/)
 
 A Kotlin library that provides extensions for bit-twiddling.
@@ -36,3 +37,44 @@ assertEquals(0b00000000_00010001_00110011_01010101, x.ror(8))
 ```
 
 This library is based on material from [Hacker's Delight](http://www.hackersdelight.org/).
+
+## Installation
+
+```groovy
+apply plugin: 'org.jetbrains.kotlin.multiplatform'
+
+repositories {
+    maven { url 'https://dl.bintray.com/tmurakami/maven' }
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation 'com.github.tmurakami:btkt:0.1.0' 
+            }
+        }
+    }
+}
+```
+
+Note that you need to add `enableFeaturePreview('GRADLE_METADATA')` into
+your `settings.gradle`. Please refer to https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#experimental-metadata-publishing-mode.
+
+## License
+
+```
+Copyright 2018 Tsuyoshi Murakami
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
