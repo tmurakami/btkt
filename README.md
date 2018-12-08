@@ -2,6 +2,7 @@
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.3.11%2B-blue.svg)
 [![Build Status](https://travis-ci.org/tmurakami/btkt.svg?branch=master)](https://travis-ci.org/tmurakami/btkt/)
+[![Download](https://api.bintray.com/packages/tmurakami/maven/btkt/images/download.svg)](https://bintray.com/tmurakami/maven/btkt/_latestVersion)
 
 A Kotlin library that provides extensions for bit-twiddling.
 

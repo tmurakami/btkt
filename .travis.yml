@@ -44,9 +44,9 @@ matrix:
       env:
         - GRADLE_OPTS=-Dorg.gradle.daemon=false
         - JAVA_HOME=c:\jdk-11.0.1
-        - DRIVE_C=$HOME/.wine/drive_c
-        - JDK_DIR=$DRIVE_C/jdk-11.0.1
-        - USER_DIR=$DRIVE_C/users/$USER
+        - DRIVE_C="$HOME/.wine/drive_c"
+        - JDK_DIR="$DRIVE_C/jdk-11.0.1"
+        - USER_DIR="$DRIVE_C/users/$USER"
       before_install:
         - sudo dpkg --add-architecture i386
         - wget -q https://dl.winehq.org/wine-builds/Release.key
