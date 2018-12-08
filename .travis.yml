@@ -49,15 +49,14 @@ matrix:
         - USER_DIR=$DRIVE_C/users/$USER
       before_install:
         - sudo dpkg --add-architecture i386
-        - wget -q https://dl.winehq.org/wine-builds/Release.key
-        - sudo apt-key add Release.key
+        - curl https://dl.winehq.org/wine-builds/Release.key | sudo apt-key add -
         - sudo apt-add-repository https://dl.winehq.org/wine-builds/ubuntu/
         - sudo apt-get update -q
         - sudo apt-get install -qy winehq-stable
         - wineboot
         - |
           if [ ! -e $JDK_DIR/release ]; then
-            wget -q https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
+            curl -O https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_windows-x64_bin.zip
             unzip openjdk-11.0.1_windows-x64_bin.zip -d $DRIVE_C
           fi
       script: wine cmd /c gradlew mingwX64Test
