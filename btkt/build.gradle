@@ -62,7 +62,7 @@ kotlin {
         def nativeTarget = presets.find { it.properties.konanTarget == host }.with {
             fromPreset(it, it.name) {
                 mavenPublication {
-                    artifactId = "$project.name-${konanTarget.name.replace('_', '-')}"
+                    artifactId = "${project.name}-${konanTarget.name}"
                 }
                 compilations.all {
                     kotlinSourceSets.each {
@@ -75,7 +75,7 @@ kotlin {
             presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
                 fromPreset(it, it.name) {
                     mavenPublication {
-                        artifactId = "$project.name-${konanTarget.name.replace('_', '-')}"
+                        artifactId = "${project.name}-${konanTarget.name}"
                     }
                     compilations.all {
                         nativeTarget.compilations[name].kotlinSourceSets.each { source it }
