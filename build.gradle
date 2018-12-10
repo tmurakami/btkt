@@ -35,7 +35,7 @@ allprojects {
 
 subprojects {
     version = scmVersion.version
-    group = 'com.github.tmurakami'
+    group = 'com.github.tmurakami.btkt'
 }
 
 task clean(type: Delete) {
