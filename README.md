@@ -52,7 +52,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation 'com.github.tmurakami:btkt:0.2.0' 
+                implementation 'com.github.tmurakami.btkt:btkt:0.2.0' 
             }
         }
     }
