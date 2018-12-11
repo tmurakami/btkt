@@ -45,7 +45,7 @@ This library is based on material from [Hacker's Delight](http://www.hackersdeli
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
 
 repositories {
-    maven { url 'https://dl.bintray.com/tmurakami/maven' }
+    jcenter()
 }
 
 kotlin {
@@ -60,7 +60,8 @@ kotlin {
 ```
 
 Note that you need to add `enableFeaturePreview('GRADLE_METADATA')` into
-your `settings.gradle`. Please refer to https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#experimental-metadata-publishing-mode.
+your `settings.gradle`. Please refer to https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#experimental-metadata-publishing-mode
+for more information.
 
 ## License
 
