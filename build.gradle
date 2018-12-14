@@ -4,7 +4,6 @@ buildscript {
     repositories {
         maven { url 'https://plugins.gradle.org/m2/' }
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
@@ -35,7 +34,6 @@ scmVersion {
 allprojects {
     repositories {
         mavenCentral()
-        jcenter()
     }
 }
 
