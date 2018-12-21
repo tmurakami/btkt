@@ -73,18 +73,14 @@ class ULongTest {
     @Test
     fun rol() {
         val x = 1UL
-        val bitCount = 8
-        val actual = x rol bitCount
-        assertEquals(0x0000000000000100UL, actual)
-        assertEquals(x shl bitCount or (x shr -bitCount), actual)
+        assertEquals(0x0000000000000100UL, x rol 8)
+        assertEquals(0x0100000000000000UL, x rol -8)
     }
 
     @Test
     fun ror() {
         val x = 1UL
-        val bitCount = 8
-        val actual = x ror bitCount
-        assertEquals(0x0100000000000000UL, actual)
-        assertEquals(x shr bitCount or (x shl -bitCount), actual)
+        assertEquals(0x0100000000000000UL, x ror 8)
+        assertEquals(0x0000000000000100UL, x ror -8)
     }
 }

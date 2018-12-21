@@ -49,7 +49,6 @@ actual inline val Long.lowestOneBit: Long get() = and(-this)
 actual val Long.leadingZeros: Int
     get() {
         if (this < 0L) return 0
-        if (this == 0L) return 64
         // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
         val highBits = ushr(32).toInt()
         if (highBits != 0) return 1054 - ((highBits.toDouble() + 0.5).toRawBits() shr 52).toInt()

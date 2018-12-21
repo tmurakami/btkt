@@ -86,18 +86,14 @@ class IntTest {
     @Test
     fun rol() {
         val x = 1
-        val bitCount = 8
-        val actual = x rol bitCount
-        assertEquals(0x00000100, actual)
-        assertEquals(x shl bitCount or (x ushr -bitCount), actual)
+        assertEquals(0x00000100, x rol 8)
+        assertEquals(0x01000000, x rol -8)
     }
 
     @Test
     fun ror() {
         val x = 1
-        val bitCount = 8
-        val actual = x ror bitCount
-        assertEquals(0x01000000, actual)
-        assertEquals(x ushr bitCount or (x shl -bitCount), actual)
+        assertEquals(0x01000000, x ror 8)
+        assertEquals(0x00000100, x ror -8)
     }
 }

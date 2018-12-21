@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-@file:Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.github.tmurakami.btkt
 
 @PublishedApi
 internal inline val Long.high_: Int
-    get() = let { js("it").high_ }
+    get() = let { js("it").high_.unsafeCast<Int>() }
 
 actual inline val Long.oneBits: Int get() = high_.oneBits + toInt().oneBits
 
 actual val Long.highestOneBit: Long
     get() = when (val highBits = high_) {
         0 -> toInt().highestOneBit.toLong()
-        else -> js("Kotlin").Long.fromBits(0, highBits.highestOneBit)
+        else -> js("Kotlin").Long.fromBits(0, highBits.highestOneBit).unsafeCast<Long>()
     }
 
 actual val Long.lowestOneBit: Long
     get() = when (val lowBits = toInt()) {
-        0 -> js("Kotlin").Long.fromBits(0, high_.lowestOneBit)
+        0 -> js("Kotlin").Long.fromBits(0, high_.lowestOneBit).unsafeCast<Long>()
         else -> lowBits.lowestOneBit.toLong()
     }
 
@@ -49,17 +49,25 @@ actual val Long.trailingZeros: Int
     }
 
 actual inline fun Long.reverse(): Long =
-    js("Kotlin").Long.fromBits(high_.reverse(), toInt().reverse())
+    js("Kotlin").Long.fromBits(high_.reverse(), toInt().reverse()).unsafeCast<Long>()
 
 actual inline fun Long.reverseBytes(): Long =
-    js("Kotlin").Long.fromBits(high_.reverseBytes(), toInt().reverseBytes())
+    js("Kotlin").Long.fromBits(high_.reverseBytes(), toInt().reverseBytes()).unsafeCast<Long>()
 
-actual inline infix fun Long.rol(bitCount: Int): Long = ror(-bitCount)
+actual infix fun Long.rol(bitCount: Int): Long {
+    val highBits = high_
+    val lowBits = toInt()
+    val a = highBits shl bitCount or (lowBits ushr -bitCount)
+    val b = lowBits shl bitCount or (highBits ushr -bitCount)
+    val v = if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
+    return v.unsafeCast<Long>()
+}
 
 actual infix fun Long.ror(bitCount: Int): Long {
     val highBits = high_
     val lowBits = toInt()
     val a = highBits ushr bitCount or (lowBits shl -bitCount)
     val b = lowBits ushr bitCount or (highBits shl -bitCount)
-    return if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
+    val v = if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
+    return v.unsafeCast<Long>()
 }

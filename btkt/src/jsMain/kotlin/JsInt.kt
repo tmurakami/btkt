@@ -40,10 +40,11 @@ actual val Int.highestOneBit: Int
         return x - (x ushr 1)
     }
 
-@Suppress("UnsafeCastFromDynamic", "ReplaceSingleLineLet")
 actual val Int.leadingZeros: Int
     get() {
-        if (js("Math.clz32")) return let { js("Math.clz32(it)") }
+        if (js("Math.clz32").unsafeCast<Boolean>()) {
+            return let { js("Math.clz32(it)").unsafeCast<Int>() }
+        }
         // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
         if (this <= 0) return inv() shr 26 and 32
         var x = this
