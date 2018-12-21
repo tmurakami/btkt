@@ -55,19 +55,25 @@ actual inline fun Long.reverseBytes(): Long =
     js("Kotlin").Long.fromBits(high_.reverseBytes(), toInt().reverseBytes()).unsafeCast<Long>()
 
 actual infix fun Long.rol(bitCount: Int): Long {
+    val n = bitCount and 63
+    if (n == 0) return this
     val highBits = high_
     val lowBits = toInt()
-    val a = highBits shl bitCount or (lowBits ushr -bitCount)
-    val b = lowBits shl bitCount or (highBits ushr -bitCount)
-    val v = if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
+    if (n == 32) return js("Kotlin").Long.fromBits(highBits, lowBits).unsafeCast<Long>()
+    val a = highBits shl n or (lowBits ushr -n)
+    val b = lowBits shl n or (highBits ushr -n)
+    val v = if (n > 32) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
     return v.unsafeCast<Long>()
 }
 
 actual infix fun Long.ror(bitCount: Int): Long {
+    val n = bitCount and 63
+    if (n == 0) return this
     val highBits = high_
     val lowBits = toInt()
-    val a = highBits ushr bitCount or (lowBits shl -bitCount)
-    val b = lowBits ushr bitCount or (highBits shl -bitCount)
-    val v = if (bitCount < 0) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
+    if (n == 32) return js("Kotlin").Long.fromBits(highBits, lowBits).unsafeCast<Long>()
+    val a = highBits ushr n or (lowBits shl -n)
+    val b = lowBits ushr n or (highBits shl -n)
+    val v = if (n > 32) js("Kotlin").Long.fromBits(a, b) else js("Kotlin").Long.fromBits(b, a)
     return v.unsafeCast<Long>()
 }
