@@ -146,9 +146,8 @@ task installJsTestDependencies(type: NpmTask) {
             'mochawesome']
 }
 
-task jsTest(type: NodeTask,
-            overwrite: true,
-            dependsOn: [compileTestKotlinJs, populateNodeModules, installJsTestDependencies]) {
+task runMocha(type: NodeTask,
+              dependsOn: [compileTestKotlinJs, populateNodeModules, installJsTestDependencies]) {
     inputs.files compileKotlinJs,
                  compileTestKotlinJs,
                  populateNodeModules,
@@ -179,7 +178,10 @@ task jsTest(type: NodeTask,
             '--reporter', 'mocha-multi-reporters',
             '--reporter-options', "configFile=$multiReportersConfig"]
 }
-check.dependsOn jsTest
+jsTest {
+    enabled = false
+    dependsOn runMocha
+}
 
 publishing {
     repositories {
