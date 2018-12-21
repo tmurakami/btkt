@@ -85,15 +85,45 @@ class IntTest {
 
     @Test
     fun rol() {
-        val x = 1
-        assertEquals(0x00000100, x rol 8)
-        assertEquals(0x01000000, x rol -8)
+        val x = 0x07050301
+        assertEquals(x, x rol 0)
+        assertEquals(0x70503010, x rol 4)
+        assertEquals(0x05030107, x rol 8)
+        assertEquals(0x50301070, x rol 12)
+        assertEquals(0x03010705, x rol 16)
+        assertEquals(0x30107050, x rol 20)
+        assertEquals(0x01070503, x rol 24)
+        assertEquals(0x10705030, x rol 28)
+        assertEquals(x, x rol 32)
+        assertEquals(0x10705030, x rol -4)
+        assertEquals(0x01070503, x rol -8)
+        assertEquals(0x30107050, x rol -12)
+        assertEquals(0x03010705, x rol -16)
+        assertEquals(0x50301070, x rol -20)
+        assertEquals(0x05030107, x rol -24)
+        assertEquals(0x70503010, x rol -28)
+        assertEquals(x, x rol -32)
     }
 
     @Test
     fun ror() {
-        val x = 1
-        assertEquals(0x01000000, x ror 8)
-        assertEquals(0x00000100, x ror -8)
+        val x = 0x07050301
+        assertEquals(x, x ror 0)
+        assertEquals(0x10705030, x ror 4)
+        assertEquals(0x01070503, x ror 8)
+        assertEquals(0x30107050, x ror 12)
+        assertEquals(0x03010705, x ror 16)
+        assertEquals(0x50301070, x ror 20)
+        assertEquals(0x05030107, x ror 24)
+        assertEquals(0x70503010, x ror 28)
+        assertEquals(x, x ror 32)
+        assertEquals(0x70503010, x ror -4)
+        assertEquals(0x05030107, x ror -8)
+        assertEquals(0x50301070, x ror -12)
+        assertEquals(0x03010705, x ror -16)
+        assertEquals(0x30107050, x ror -20)
+        assertEquals(0x01070503, x ror -24)
+        assertEquals(0x10705030, x ror -28)
+        assertEquals(x, x ror -32)
     }
 }
