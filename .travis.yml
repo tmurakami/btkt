@@ -52,13 +52,17 @@ references:
         - $USER_DIR/.konan/dependencies/
   deploy: &deploy
     provider: script
-    on:
-      tags: true
     skip_cleanup: true
+
+stages:
+  - test
+  - name: deploy
+    if: branch = master AND type = push AND tag IS present
 
 jobs:
   include:
-    - <<: *linux
+    - stage: test
+      <<: *linux
       install: true
       script: ./gradlew check
     - <<: *osx
