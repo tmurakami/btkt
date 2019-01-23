@@ -3,83 +3,81 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'maven-publish'
 
 kotlin {
-    targets {
-        all {
-            compilations.all {
-                tasks[compileKotlinTaskName].kotlinOptions {
-                    allWarningsAsErrors = true
-                }
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                allWarningsAsErrors = true
             }
-            mavenPublication {
-                pom {
-                    name = 'BT.kt'
-                    description = 'A Kotlin library that provides extensions for bit-twiddling'
+        }
+        mavenPublication {
+            pom {
+                name = 'BT.kt'
+                description = 'A Kotlin library that provides extensions for bit-twiddling'
+                url = 'https://github.com/tmurakami/btkt'
+                inceptionYear = '2018'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'tmurakami'
+                        name = 'Tsuyoshi Murakami'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/tmurakami/btkt.git'
+                    developerConnection = 'scm:git:ssh://github.com/tmurakami/btkt.git'
                     url = 'https://github.com/tmurakami/btkt'
-                    inceptionYear = '2018'
-                    licenses {
-                        license {
-                            name = 'The Apache License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = 'tmurakami'
-                            name = 'Tsuyoshi Murakami'
-                        }
-                    }
-                    scm {
-                        connection = 'scm:git:https://github.com/tmurakami/btkt.git'
-                        developerConnection = 'scm:git:ssh://github.com/tmurakami/btkt.git'
-                        url = 'https://github.com/tmurakami/btkt'
-                    }
                 }
             }
         }
-        fromPreset(presets.js, 'js') {
-            compilations.main {
-                tasks[compileKotlinTaskName].kotlinOptions {
-                    sourceMap = true
-                    sourceMapEmbedSources = 'always'
-                    moduleKind = 'umd'
-                }
+    }
+    js {
+        compilations.main {
+            kotlinOptions {
+                sourceMap = true
+                sourceMapEmbedSources = 'always'
+                moduleKind = 'umd'
             }
-            compilations.test {
-                tasks[compileKotlinTaskName].kotlinOptions {
-                    sourceMap = true
-                    moduleKind = 'commonjs'
+        }
+        compilations.test {
+            kotlinOptions {
+                sourceMap = true
+                moduleKind = 'commonjs'
+            }
+        }
+    }
+    jvm {
+        compilations.main {
+            kotlinOptions {
+                freeCompilerArgs += ['-Xno-param-assertions']
+            }
+        }
+    }
+    def host = org.jetbrains.kotlin.konan.target.HostManager.host
+    def nativeTarget = presets.find { it.properties.konanTarget == host }.with {
+        targetFromPreset(it) {
+            mavenPublication {
+                artifactId = "${project.name}-${konanTarget.name}"
+            }
+            compilations.all {
+                kotlinSourceSets.each {
+                    it.kotlin.srcDirs = ["src/native${name.capitalize()}/kotlin"]
                 }
             }
         }
-        fromPreset(presets.jvm, 'jvm') {
-            compilations.main {
-                tasks[compileKotlinTaskName].kotlinOptions {
-                    freeCompilerArgs += ['-Xno-param-assertions']
-                }
-            }
-        }
-        def host = org.jetbrains.kotlin.konan.target.HostManager.host
-        def nativeTarget = presets.find { it.properties.konanTarget == host }.with {
-            fromPreset(it, it.name) {
+    }
+    if ((System.env.CI ?: 'false').toBoolean()) {
+        presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
+            targetFromPreset(it) {
                 mavenPublication {
                     artifactId = "${project.name}-${konanTarget.name}"
                 }
                 compilations.all {
-                    kotlinSourceSets.each {
-                        it.kotlin.srcDirs = ["src/native${name.capitalize()}/kotlin"]
-                    }
-                }
-            }
-        }
-        if ((System.env.CI ?: 'false').toBoolean()) {
-            presets.matching { it.hasProperty('konanTarget') && it.konanTarget != host }.all {
-                fromPreset(it, it.name) {
-                    mavenPublication {
-                        artifactId = "${project.name}-${konanTarget.name}"
-                    }
-                    compilations.all {
-                        nativeTarget.compilations[name].kotlinSourceSets.each { source it }
-                    }
+                    nativeTarget.compilations[name].kotlinSourceSets.each { source it }
                 }
             }
         }
