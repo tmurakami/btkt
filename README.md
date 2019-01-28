@@ -31,13 +31,14 @@ assertEquals(0b00000000_10101010_11001100_10001000, x.reverse())
 assertEquals(0b00000000_01010101_00110011_00010001, x.reverseBytes())
 
 // Rotate left 8 bits
-assertEquals(0b00110011_01010101_00000000_00010001, x.rol(8))
+assertEquals(0b00110011_01010101_00000000_00010001, x rol 8)
 
 // Rotate right 8 bits
-assertEquals(0b00000000_00010001_00110011_01010101, x.ror(8))
+assertEquals(0b00000000_00010001_00110011_01010101, x ror 8)
 ```
 
-This library is based on material from [Hacker's Delight](http://www.hackersdelight.org/).
+This library is based on material from
+[Hacker's Delight](http://www.hackersdelight.org/).
 
 ## Installation
 
@@ -60,7 +61,8 @@ kotlin {
 ```
 
 Note that you need to add `enableFeaturePreview('GRADLE_METADATA')` into
-your `settings.gradle`. Please refer to https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#experimental-metadata-publishing-mode
+your `settings.gradle`. Please refer to
+https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#experimental-metadata-publishing-mode
 for more information.
 
 ## License
