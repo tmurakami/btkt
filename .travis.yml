@@ -46,6 +46,13 @@ references:
           unzip openjdk-11.0.2_windows-x64_bin.zip -d $DRIVE_C
         fi
 
+notifications:
+  email:
+    recipients:
+      - tmurakami@users.noreply.github.com
+    on_success: change
+    on_failure: always
+
 stages:
   - test
   - name: deploy
