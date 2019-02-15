@@ -55,8 +55,8 @@ notifications:
 
 stages:
   - test
-  - name: deploy
-    if: branch = master AND type = push AND tag IS present
+  - name: publish
+    if: tag IS present
 
 install: true
 
@@ -69,7 +69,7 @@ jobs:
       script: ./gradlew macosX64Test
     - <<: *wine
       script: wine cmd /c gradlew mingwX64Test
-    - stage: deploy
+    - stage: publish
       <<: *linux
       script: ./gradlew publish
     - <<: *osx
