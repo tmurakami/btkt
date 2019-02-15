@@ -56,7 +56,7 @@ notifications:
 stages:
   - test
   - name: publish
-    if: tag IS present
+    if: (branch = master) AND (type = push) AND (tag IS present)
 
 install: true
 
