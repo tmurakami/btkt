@@ -21,7 +21,7 @@ import kotlin.test.assertEquals
 
 class LongTest {
     @Test
-    fun oneBits() {
+    fun testOneBits() {
         assertEquals(1, Long.MIN_VALUE.oneBits)
         assertEquals(64, (-1L).oneBits)
         assertEquals(0, 0L.oneBits)
@@ -30,7 +30,7 @@ class LongTest {
     }
 
     @Test
-    fun highestOneBit() {
+    fun testHighestOneBit() {
         assertEquals(Long.MIN_VALUE, Long.MIN_VALUE.highestOneBit)
         assertEquals(Long.MIN_VALUE, (-1L).highestOneBit)
         assertEquals(0L, 0L.highestOneBit)
@@ -39,7 +39,7 @@ class LongTest {
     }
 
     @Test
-    fun lowestOneBit() {
+    fun testLowestOneBit() {
         assertEquals(Long.MIN_VALUE, Long.MIN_VALUE.lowestOneBit)
         assertEquals(1L, (-1L).lowestOneBit)
         assertEquals(0L, 0L.lowestOneBit)
@@ -48,7 +48,7 @@ class LongTest {
     }
 
     @Test
-    fun leadingZeros() {
+    fun testLeadingZeros() {
         assertEquals(0, Long.MIN_VALUE.leadingZeros)
         assertEquals(0, (-1L).leadingZeros)
         assertEquals(64, 0L.leadingZeros)
@@ -57,7 +57,7 @@ class LongTest {
     }
 
     @Test
-    fun trailingZeros() {
+    fun testTrailingZeros() {
         assertEquals(63, Long.MIN_VALUE.trailingZeros)
         assertEquals(0, (-1L).trailingZeros)
         assertEquals(64, 0L.trailingZeros)
@@ -66,7 +66,7 @@ class LongTest {
     }
 
     @Test
-    fun reverse() {
+    fun testReverse() {
         assertEquals(1L, Long.MIN_VALUE.reverse())
         assertEquals(-1L, (-1L).reverse())
         assertEquals(0L, 0L.reverse())
@@ -75,7 +75,7 @@ class LongTest {
     }
 
     @Test
-    fun reverseBytes() {
+    fun testReverseBytes() {
         assertEquals(0x0000000000000080L, Long.MIN_VALUE.reverseBytes())
         assertEquals(-1L, (-1L).reverseBytes())
         assertEquals(0L, 0L.reverseBytes())
@@ -84,7 +84,7 @@ class LongTest {
     }
 
     @Test
-    fun rol() {
+    fun testRol() {
         val x = 0x0007000500030001L
         assertEquals(x, x rol 0)
         assertEquals(0x0070005000300010L, x rol 4)
@@ -122,7 +122,7 @@ class LongTest {
     }
 
     @Test
-    fun ror() {
+    fun testRor() {
         val x = 0x0007000500030001L
         assertEquals(x, x ror 0)
         assertEquals(0x1000700050003000L, x ror 4)

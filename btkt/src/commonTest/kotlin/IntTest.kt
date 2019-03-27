@@ -21,7 +21,7 @@ import kotlin.test.assertEquals
 
 class IntTest {
     @Test
-    fun oneBits() {
+    fun testOneBits() {
         assertEquals(1, Int.MIN_VALUE.oneBits)
         assertEquals(32, (-1).oneBits)
         assertEquals(0, 0.oneBits)
@@ -30,7 +30,7 @@ class IntTest {
     }
 
     @Test
-    fun highestOneBit() {
+    fun testHighestOneBit() {
         assertEquals(Int.MIN_VALUE, Int.MIN_VALUE.highestOneBit)
         assertEquals(Int.MIN_VALUE, (-1).highestOneBit)
         assertEquals(0, 0.highestOneBit)
@@ -39,7 +39,7 @@ class IntTest {
     }
 
     @Test
-    fun lowestOneBit() {
+    fun testLowestOneBit() {
         assertEquals(Int.MIN_VALUE, Int.MIN_VALUE.lowestOneBit)
         assertEquals(1, (-1).lowestOneBit)
         assertEquals(0, 0.lowestOneBit)
@@ -48,7 +48,7 @@ class IntTest {
     }
 
     @Test
-    fun leadingZeros() {
+    fun testLeadingZeros() {
         assertEquals(0, Int.MIN_VALUE.leadingZeros)
         assertEquals(0, (-1).leadingZeros)
         assertEquals(32, 0.leadingZeros)
@@ -57,7 +57,7 @@ class IntTest {
     }
 
     @Test
-    fun trailingZeros() {
+    fun testTrailingZeros() {
         assertEquals(31, Int.MIN_VALUE.trailingZeros)
         assertEquals(0, (-1).trailingZeros)
         assertEquals(32, 0.trailingZeros)
@@ -66,7 +66,7 @@ class IntTest {
     }
 
     @Test
-    fun reverse() {
+    fun testReverse() {
         assertEquals(1, Int.MIN_VALUE.reverse())
         assertEquals(-1, (-1).reverse())
         assertEquals(0, 0.reverse())
@@ -75,7 +75,7 @@ class IntTest {
     }
 
     @Test
-    fun reverseBytes() {
+    fun testReverseBytes() {
         assertEquals(0x00000080, Int.MIN_VALUE.reverseBytes())
         assertEquals(-1, (-1).reverseBytes())
         assertEquals(0, 0.reverseBytes())
@@ -84,7 +84,7 @@ class IntTest {
     }
 
     @Test
-    fun rol() {
+    fun testRol() {
         val x = 0x07050301
         assertEquals(x, x rol 0)
         assertEquals(0x70503010, x rol 4)
@@ -106,7 +106,7 @@ class IntTest {
     }
 
     @Test
-    fun ror() {
+    fun testRor() {
         val x = 0x07050301
         assertEquals(x, x ror 0)
         assertEquals(0x10705030, x ror 4)

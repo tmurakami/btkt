@@ -22,56 +22,56 @@ import kotlin.test.assertEquals
 @ExperimentalUnsignedTypes
 class UIntTest {
     @Test
-    fun oneBits() {
+    fun testOneBits() {
         assertEquals(0, 0u.oneBits)
         assertEquals(1, 1u.oneBits)
         assertEquals(32, UInt.MAX_VALUE.oneBits)
     }
 
     @Test
-    fun highestOneBit() {
+    fun testHighestOneBit() {
         assertEquals(0u, 0u.highestOneBit)
         assertEquals(1u, 1u.highestOneBit)
         assertEquals(0x80000000u, UInt.MAX_VALUE.highestOneBit)
     }
 
     @Test
-    fun lowestOneBit() {
+    fun testLowestOneBit() {
         assertEquals(0u, 0u.lowestOneBit)
         assertEquals(1u, 1u.lowestOneBit)
         assertEquals(1u, UInt.MAX_VALUE.lowestOneBit)
     }
 
     @Test
-    fun leadingZeros() {
+    fun testLeadingZeros() {
         assertEquals(32, 0u.leadingZeros)
         assertEquals(0, UInt.MAX_VALUE.leadingZeros)
         repeat(UInt.SIZE_BITS) { assertEquals(31 - it, (1u shl it).leadingZeros) }
     }
 
     @Test
-    fun trailingZeros() {
+    fun testTrailingZeros() {
         assertEquals(32, 0u.trailingZeros)
         assertEquals(0, UInt.MAX_VALUE.trailingZeros)
         repeat(UInt.SIZE_BITS) { assertEquals(it, (1u shl it).trailingZeros) }
     }
 
     @Test
-    fun reverse() {
+    fun testReverse() {
         assertEquals(0u, 0u.reverse())
         assertEquals(0x80000000u, 1u.reverse())
         assertEquals(UInt.MAX_VALUE, UInt.MAX_VALUE.reverse())
     }
 
     @Test
-    fun reverseBytes() {
+    fun testReverseBytes() {
         assertEquals(0u, 0u.reverseBytes())
         assertEquals(0x01000000u, 1u.reverseBytes())
         assertEquals(UInt.MAX_VALUE, UInt.MAX_VALUE.reverseBytes())
     }
 
     @Test
-    fun rol() {
+    fun testRol() {
         val x = 0x07050301u
         assertEquals(x, x rol 0)
         assertEquals(0x70503010u, x rol 4)
@@ -93,7 +93,7 @@ class UIntTest {
     }
 
     @Test
-    fun ror() {
+    fun testRor() {
         val x = 0x07050301u
         assertEquals(x, x ror 0)
         assertEquals(0x10705030u, x ror 4)

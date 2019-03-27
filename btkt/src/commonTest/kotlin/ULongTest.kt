@@ -22,56 +22,56 @@ import kotlin.test.assertEquals
 @ExperimentalUnsignedTypes
 class ULongTest {
     @Test
-    fun oneBits() {
+    fun testOneBits() {
         assertEquals(0, 0UL.oneBits)
         assertEquals(1, 1UL.oneBits)
         assertEquals(64, ULong.MAX_VALUE.oneBits)
     }
 
     @Test
-    fun highestOneBit() {
+    fun testHighestOneBit() {
         assertEquals(0UL, 0UL.highestOneBit)
         assertEquals(1UL, 1UL.highestOneBit)
         assertEquals(0x8000000000000000UL, ULong.MAX_VALUE.highestOneBit)
     }
 
     @Test
-    fun lowestOneBit() {
+    fun testLowestOneBit() {
         assertEquals(0UL, 0UL.lowestOneBit)
         assertEquals(1UL, 1UL.lowestOneBit)
         assertEquals(1UL, ULong.MAX_VALUE.lowestOneBit)
     }
 
     @Test
-    fun leadingZeros() {
+    fun testLeadingZeros() {
         assertEquals(64, 0UL.leadingZeros)
         assertEquals(0, ULong.MAX_VALUE.leadingZeros)
         repeat(ULong.SIZE_BITS) { assertEquals(63 - it, (1UL shl it).leadingZeros) }
     }
 
     @Test
-    fun trailingZeros() {
+    fun testTrailingZeros() {
         assertEquals(64, 0UL.trailingZeros)
         assertEquals(0, ULong.MAX_VALUE.trailingZeros)
         repeat(ULong.SIZE_BITS) { assertEquals(it, (1UL shl it).trailingZeros) }
     }
 
     @Test
-    fun reverse() {
+    fun testReverse() {
         assertEquals(0UL, 0UL.reverse())
         assertEquals(0x8000000000000000UL, 1UL.reverse())
         assertEquals(ULong.MAX_VALUE, ULong.MAX_VALUE.reverse())
     }
 
     @Test
-    fun reverseBytes() {
+    fun testReverseBytes() {
         assertEquals(0UL, 0UL.reverseBytes())
         assertEquals(0x0100000000000000UL, 1UL.reverseBytes())
         assertEquals(ULong.MAX_VALUE, ULong.MAX_VALUE.reverseBytes())
     }
 
     @Test
-    fun rol() {
+    fun testRol() {
         val x = 0x0007000500030001UL
         assertEquals(x, x rol 0)
         assertEquals(0x0070005000300010UL, x rol 4)
@@ -109,7 +109,7 @@ class ULongTest {
     }
 
     @Test
-    fun ror() {
+    fun testRor() {
         val x = 0x0007000500030001UL
         assertEquals(x, x ror 0)
         assertEquals(0x1000700050003000UL, x ror 4)
