@@ -45,6 +45,12 @@ references:
           curl -O https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip
           unzip openjdk-11.0.2_windows-x64_bin.zip -d $DRIVE_C
         fi
+  deploy: &deploy
+    provider: script
+    on:
+      tags: true
+      branch: master
+    skip_cleanup: true
 
 notifications:
   email:
@@ -56,7 +62,7 @@ notifications:
 stages:
   - test
   - name: publish
-    if: (branch = master) AND (type = push) AND (tag IS present)
+    if: type = push AND tag IS present
 
 install: true
 
@@ -71,11 +77,20 @@ jobs:
       script: wine cmd /c gradlew mingwX64Test
     - stage: publish
       <<: *linux
-      script: ./gradlew publish
+      script: skip
+      deploy:
+        <<: *deploy
+        script: ./gradlew publish
     - <<: *osx
-      script: ./gradlew publishMacosX64PublicationToMavenRepository
-                        publishIosArm32PublicationToMavenRepository
-                        publishIosArm64PublicationToMavenRepository
-                        publishIosX64PublicationToMavenRepository
+      script: skip
+      deploy:
+        <<: *deploy
+        script: ./gradlew publishMacosX64PublicationToMavenRepository
+                          publishIosArm32PublicationToMavenRepository
+                          publishIosArm64PublicationToMavenRepository
+                          publishIosX64PublicationToMavenRepository
     - <<: *wine
-      script: wine cmd /c gradlew publishMingwX64PublicationToMavenRepository
+      script: skip
+      deploy:
+        <<: *deploy
+        script: wine cmd /c gradlew publishMingwX64PublicationToMavenRepository
