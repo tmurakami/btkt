@@ -161,7 +161,7 @@ node {
 repositories.withType(IvyArtifactRepository) { metadataSources { artifact() } }
 
 task installJsTestDependencies(type: NpmTask) {
-    inputs.file 'package-lock.json'
+    inputs.files 'package-lock.json'
     outputs.dir 'node_modules'
     args = ['install',
             'mocha',
