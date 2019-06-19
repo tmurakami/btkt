@@ -1,5 +1,4 @@
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
-apply plugin: 'com.moowork.node'
 apply plugin: 'maven-publish'
 
 kotlin {
@@ -36,6 +35,8 @@ kotlin {
         }
     }
     js {
+        nodejs()
+        browser()
         compilations.main {
             kotlinOptions {
                 sourceMap = true
@@ -143,69 +144,6 @@ task ktlintFormat(type: JavaExec, group: 'formatting') {
     classpath = configurations.ktlint
     main = 'com.github.shyiko.ktlint.Main'
     args '-F', 'src/**/*.kt'
-}
-
-task populateNodeModules(type: Copy, dependsOn: compileKotlinJs) {
-    from compileKotlinJs.destinationDir
-    doFirst {
-        configurations.jsTestRuntimeClasspath.each { from zipTree(it).matching { include '*.js' } }
-    }
-    into "$buildDir/node_modules"
-}
-
-node {
-    version = versions.node
-    download = true
-}
-// TODO https://github.com/srs/gradle-node-plugin/issues/301
-repositories.withType(IvyArtifactRepository) { metadataSources { artifact() } }
-
-task installJsTestDependencies(type: NpmTask) {
-    inputs.files 'package-lock.json'
-    outputs.dir 'node_modules'
-    args = ['install',
-            'mocha',
-            'source-map-support',
-            'mocha-multi-reporters',
-            'mocha-junit-reporter',
-            'mochawesome']
-}
-
-task runMocha(type: NodeTask,
-              dependsOn: [compileTestKotlinJs, populateNodeModules, installJsTestDependencies]) {
-    inputs.files compileKotlinJs,
-                 compileTestKotlinJs,
-                 populateNodeModules,
-                 installJsTestDependencies
-    def resultsDir = "$testResultsDir/jsTest"
-    def reportDir = "$testReportDir/jsTest"
-    outputs.dirs resultsDir, reportDir
-    script = file('node_modules/mocha/bin/mocha')
-    def multiReportersConfig = file("$buildDir/mocha-multi-reporters-config.json")
-    doFirst {
-        multiReportersConfig.text =
-                """|{
-                   |  "reporterEnabled": "mocha-junit-reporter,mochawesome",
-                   |  "mochaJunitReporterReporterOptions": {
-                   |    "suiteTitleSeparatedBy": ".",
-                   |    "mochaFile": "$resultsDir/TEST-${project.group}.${project.name}.xml"
-                   |  },
-                   |  "mochawesomeReporterOptions": {
-                   |    "quiet": true,
-                   |    "reportDir": "$reportDir",
-                   |    "reportFilename": "index"
-                   |  }
-                   |}
-                   |""".stripMargin()
-    }
-    args = [compileTestKotlinJs.outputFile,
-            '--require', 'source-map-support/register',
-            '--reporter', 'mocha-multi-reporters',
-            '--reporter-options', "configFile=$multiReportersConfig"]
-}
-jsTest {
-    enabled = false
-    dependsOn runMocha
 }
 
 publishing {

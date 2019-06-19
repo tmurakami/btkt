@@ -1,14 +1,12 @@
 buildscript {
-    ext.versions = [kotlin: '1.3.31',
-                    ktlint: '0.31.0',
-                    node  : '10.16.0',]
+    ext.versions = [kotlin: '1.3.40',
+                    ktlint: '0.31.0',]
     repositories {
         gradlePluginPortal()
         mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath 'com.moowork.gradle:gradle-node-plugin:1.3.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
         classpath 'pl.allegro.tech.build:axion-release-plugin:1.10.1'
     }
@@ -41,10 +39,6 @@ allprojects {
 subprojects {
     version = scmVersion.version
     group = 'com.github.tmurakami.btkt'
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
 
 dependencyUpdates.resolutionStrategy {
