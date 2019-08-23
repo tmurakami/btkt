@@ -21,27 +21,37 @@ package com.github.tmurakami.btkt
 /**
  * Returns the number of 1-bits.
  */
-expect val Int.oneBits: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Int.oneBits: Int
+    get() = countOneBits()
 
 /**
  * Returns the leftmost 1-bit, or 0 if none.
  */
-expect val Int.highestOneBit: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Int.highestOneBit: Int
+    get() = takeHighestOneBit()
 
 /**
  * Returns the rightmost 1-bit, or 0 if none.
  */
-inline val Int.lowestOneBit: Int get() = and(-this)
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Int.lowestOneBit: Int
+    get() = takeLowestOneBit()
 
 /**
  * Returns the number of 0-bits preceding the leftmost 1-bit, or 32 if all bits are 0.
  */
-expect val Int.leadingZeros: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Int.leadingZeros: Int
+    get() = countLeadingZeroBits()
 
 /**
  * Returns the number of 0-bits following the rightmost 1-bit, or 32 if all bits are 0.
  */
-expect val Int.trailingZeros: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Int.trailingZeros: Int
+    get() = countTrailingZeroBits()
 
 /**
  * Returns the value obtained by reversing the order of the bits.
@@ -56,9 +66,11 @@ expect fun Int.reverseBytes(): Int
 /**
  * Returns the value obtained by rotating to the left by the specified [bitCount].
  */
-inline infix fun Int.rol(bitCount: Int): Int = shl(bitCount) or ushr(-bitCount)
+@UseExperimental(ExperimentalStdlibApi::class)
+inline infix fun Int.rol(bitCount: Int): Int = rotateLeft(bitCount)
 
 /**
  * Returns the value obtained by rotating to the right by the specified [bitCount].
  */
-inline infix fun Int.ror(bitCount: Int): Int = ushr(bitCount) or shl(-bitCount)
+@UseExperimental(ExperimentalStdlibApi::class)
+inline infix fun Int.ror(bitCount: Int): Int = rotateRight(bitCount)

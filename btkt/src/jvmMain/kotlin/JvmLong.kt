@@ -18,23 +18,8 @@
 
 package com.github.tmurakami.btkt
 
-import java.lang.Long.bitCount
-import java.lang.Long.highestOneBit
-import java.lang.Long.lowestOneBit
-import java.lang.Long.numberOfLeadingZeros
-import java.lang.Long.numberOfTrailingZeros
 import java.lang.Long.reverse
 import java.lang.Long.reverseBytes
-import java.lang.Long.rotateLeft
-import java.lang.Long.rotateRight
-
-actual inline val Long.oneBits: Int get() = bitCount(this)
-actual inline val Long.highestOneBit: Long get() = highestOneBit(this)
-actual inline val Long.lowestOneBit: Long get() = lowestOneBit(this)
-actual inline val Long.leadingZeros: Int get() = numberOfLeadingZeros(this)
-actual inline val Long.trailingZeros: Int get() = numberOfTrailingZeros(this)
 
 actual inline fun Long.reverse(): Long = reverse(this)
 actual inline fun Long.reverseBytes(): Long = reverseBytes(this)
-actual inline infix fun Long.rol(bitCount: Int): Long = rotateLeft(this, bitCount)
-actual inline infix fun Long.ror(bitCount: Int): Long = rotateRight(this, bitCount)

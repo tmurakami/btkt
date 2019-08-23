@@ -22,56 +22,8 @@ package com.github.tmurakami.btkt
 internal inline val Long.highBits: Int
     get() = let { js("it").high_.unsafeCast<Int>() }
 
-actual inline val Long.oneBits: Int get() = highBits.oneBits + toInt().oneBits
-
-actual val Long.highestOneBit: Long
-    get() = when (val highBits = highBits) {
-        0 -> toInt().highestOneBit.toLong()
-        else -> Long(0, highBits.highestOneBit)
-    }
-
-actual val Long.lowestOneBit: Long
-    get() = when (val lowBits = toInt()) {
-        0 -> Long(0, highBits.lowestOneBit)
-        else -> lowBits.lowestOneBit.toLong()
-    }
-
-actual val Long.leadingZeros: Int
-    get() = when (val highBits = highBits) {
-        0 -> 32 + toInt().leadingZeros
-        else -> highBits.leadingZeros
-    }
-
-actual val Long.trailingZeros: Int
-    get() = when (val lowBits = toInt()) {
-        0 -> 32 + highBits.trailingZeros
-        else -> lowBits.trailingZeros
-    }
-
 actual inline fun Long.reverse(): Long = Long(highBits.reverse(), toInt().reverse())
 actual inline fun Long.reverseBytes(): Long = Long(highBits.reverseBytes(), toInt().reverseBytes())
-
-actual infix fun Long.rol(bitCount: Int): Long {
-    val n = bitCount and 63
-    if (n == 0) return this
-    val highBits = highBits
-    val lowBits = toInt()
-    if (n == 32) return Long(highBits, lowBits)
-    val a = highBits shl n or (lowBits ushr -n)
-    val b = lowBits shl n or (highBits ushr -n)
-    return if (n > 32) Long(a, b) else Long(b, a)
-}
-
-actual infix fun Long.ror(bitCount: Int): Long {
-    val n = bitCount and 63
-    if (n == 0) return this
-    val highBits = highBits
-    val lowBits = toInt()
-    if (n == 32) return Long(highBits, lowBits)
-    val a = highBits ushr n or (lowBits shl -n)
-    val b = lowBits ushr n or (highBits shl -n)
-    return if (n > 32) Long(a, b) else Long(b, a)
-}
 
 @Suppress("FunctionName")
 @PublishedApi

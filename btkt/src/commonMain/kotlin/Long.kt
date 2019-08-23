@@ -14,32 +14,44 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.github.tmurakami.btkt
 
 /**
  * Returns the number of 1-bits.
  */
-expect val Long.oneBits: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Long.oneBits: Int
+    get() = countOneBits()
 
 /**
  * Returns the leftmost 1-bit, or 0 if none.
  */
-expect val Long.highestOneBit: Long
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Long.highestOneBit: Long
+    get() = takeHighestOneBit()
 
 /**
  * Returns the rightmost 1-bit, or 0 if none.
  */
-expect val Long.lowestOneBit: Long
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Long.lowestOneBit: Long
+    get() = takeLowestOneBit()
 
 /**
  * Returns the number of 0-bits preceding the leftmost 1-bit, or 64 if all bits are 0.
  */
-expect val Long.leadingZeros: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Long.leadingZeros: Int
+    get() = countLeadingZeroBits()
 
 /**
  * Returns the number of 0-bits following the rightmost 1-bit, or 64 if all bits are 0.
  */
-expect val Long.trailingZeros: Int
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val Long.trailingZeros: Int
+    get() = countTrailingZeroBits()
 
 /**
  * Returns the value obtained by reversing the order of the bits.
@@ -54,9 +66,11 @@ expect fun Long.reverseBytes(): Long
 /**
  * Returns the value obtained by rotating to the left by the specified [bitCount].
  */
-expect infix fun Long.rol(bitCount: Int): Long
+@UseExperimental(ExperimentalStdlibApi::class)
+inline infix fun Long.rol(bitCount: Int): Long = rotateLeft(bitCount)
 
 /**
  * Returns the value obtained by rotating to the right by the specified [bitCount].
  */
-expect infix fun Long.ror(bitCount: Int): Long
+@UseExperimental(ExperimentalStdlibApi::class)
+inline infix fun Long.ror(bitCount: Int): Long = rotateRight(bitCount)

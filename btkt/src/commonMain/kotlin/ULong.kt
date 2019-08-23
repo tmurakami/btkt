@@ -21,27 +21,37 @@ package com.github.tmurakami.btkt
 /**
  * Returns the number of 1-bits.
  */
-inline val ULong.oneBits: Int get() = toLong().oneBits
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val ULong.oneBits: Int
+    get() = countOneBits()
 
 /**
  * Returns the leftmost 1-bit, or 0 if none.
  */
-inline val ULong.lowestOneBit: ULong get() = toLong().lowestOneBit.toULong()
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val ULong.lowestOneBit: ULong
+    get() = takeLowestOneBit()
 
 /**
  * Returns the rightmost 1-bit, or 0 if none.
  */
-inline val ULong.highestOneBit: ULong get() = toLong().highestOneBit.toULong()
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val ULong.highestOneBit: ULong
+    get() = takeHighestOneBit()
 
 /**
  * Returns the number of 0-bits preceding the leftmost 1-bit, or 64 if all bits are 0.
  */
-inline val ULong.leadingZeros: Int get() = toLong().leadingZeros
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val ULong.leadingZeros: Int
+    get() = countLeadingZeroBits()
 
 /**
  * Returns the number of 0-bits following the rightmost 1-bit, or 64 if all bits are 0.
  */
-inline val ULong.trailingZeros: Int get() = toLong().trailingZeros
+@UseExperimental(ExperimentalStdlibApi::class)
+inline val ULong.trailingZeros: Int
+    get() = countTrailingZeroBits()
 
 /**
  * Returns the value obtained by reversing the order of the bits.
@@ -56,9 +66,11 @@ inline fun ULong.reverseBytes(): ULong = toLong().reverseBytes().toULong()
 /**
  * Returns the value obtained by rotating to the left by the specified [bitCount].
  */
-inline infix fun ULong.rol(bitCount: Int): ULong = toLong().rol(bitCount).toULong()
+@UseExperimental(ExperimentalStdlibApi::class)
+inline infix fun ULong.rol(bitCount: Int): ULong = rotateLeft(bitCount)
 
 /**
  * Returns the value obtained by rotating to the right by the specified [bitCount].
  */
-inline infix fun ULong.ror(bitCount: Int): ULong = toLong().ror(bitCount).toULong()
+@UseExperimental(ExperimentalStdlibApi::class)
+inline infix fun ULong.ror(bitCount: Int): ULong = rotateRight(bitCount)

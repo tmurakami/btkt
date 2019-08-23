@@ -16,59 +16,6 @@
 
 package com.github.tmurakami.btkt
 
-actual val Int.oneBits: Int
-    get() {
-        // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
-        var x = this
-        x -= x shr 1 and 0x55555555
-        x = (x and 0x33333333) + (x shr 2 and 0x33333333)
-        x = x + (x shr 4) and 0x0F0F0F0F
-        x += x shr 8
-        x += x shr 16
-        return x and 0x3F
-    }
-
-actual val Int.highestOneBit: Int
-    get() {
-        // http://www.hackersdelight.org/hdcodetxt/flp2.c.txt
-        var x = this
-        x = x or (x shr 1)
-        x = x or (x shr 2)
-        x = x or (x shr 4)
-        x = x or (x shr 8)
-        x = x or (x shr 16)
-        return x - (x ushr 1)
-    }
-
-actual val Int.leadingZeros: Int
-    get() {
-        if (js("Math.clz32").unsafeCast<Boolean>()) {
-            return let { js("Math.clz32(it)").unsafeCast<Int>() }
-        }
-        // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
-        if (this <= 0) return inv() shr 26 and 32
-        var x = this
-        var n = 1
-        if (x shr 16 == 0) run { n += 16; x = x shl 16 }
-        if (x shr 24 == 0) run { n += 8; x = x shl 8 }
-        if (x shr 28 == 0) run { n += 4; x = x shl 4 }
-        if (x shr 30 == 0) run { n += 2; x = x shl 2 }
-        return n - (x ushr 31)
-    }
-
-actual val Int.trailingZeros: Int
-    get() {
-        // http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
-        if (this == 0) return 32
-        var x = this
-        var n = 31
-        var y = x shl 16; if (y != 0) run { n -= 16; x = y }
-        y = x shl 8; if (y != 0) run { n -= 8; x = y }
-        y = x shl 4; if (y != 0) run { n -= 4; x = y }
-        y = x shl 2; if (y != 0) run { n -= 2; x = y }
-        return n - (x shl 1 ushr 31)
-    }
-
 actual fun Int.reverse(): Int {
     // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
     var x = this

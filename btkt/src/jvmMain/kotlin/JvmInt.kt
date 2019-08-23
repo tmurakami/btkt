@@ -18,17 +18,8 @@
 
 package com.github.tmurakami.btkt
 
-import java.lang.Integer.bitCount
-import java.lang.Integer.highestOneBit
-import java.lang.Integer.numberOfLeadingZeros
-import java.lang.Integer.numberOfTrailingZeros
 import java.lang.Integer.reverse
 import java.lang.Integer.reverseBytes
-
-actual inline val Int.oneBits: Int get() = bitCount(this)
-actual inline val Int.highestOneBit: Int get() = highestOneBit(this)
-actual inline val Int.leadingZeros: Int get() = numberOfLeadingZeros(this)
-actual inline val Int.trailingZeros: Int get() = numberOfTrailingZeros(this)
 
 actual inline fun Int.reverse(): Int = reverse(this)
 actual inline fun Int.reverseBytes(): Int = reverseBytes(this)

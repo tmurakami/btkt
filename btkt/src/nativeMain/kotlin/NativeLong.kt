@@ -14,62 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.github.tmurakami.btkt
-
-actual val Long.oneBits: Int
-    get() {
-        // http://www.hackersdelight.org/hdcodetxt/pop.c.txt
-        var x = this
-        x -= x ushr 1 and 0x5555555555555555L
-        x = (x and 0x3333333333333333L) + (x ushr 2 and 0x3333333333333333L)
-        x = x + (x ushr 4) and 0x0F0F0F0F0F0F0F0FL
-        x += x ushr 8
-        x += x ushr 16
-        x += x ushr 32
-        return x.toInt() and 0x7F
-    }
-
-actual val Long.highestOneBit: Long
-    get() {
-        // http://www.hackersdelight.org/hdcodetxt/flp2.c.txt
-        var x = this
-        x = x or (x shr 1)
-        x = x or (x shr 2)
-        x = x or (x shr 4)
-        x = x or (x shr 8)
-        x = x or (x shr 16)
-        x = x or (x shr 32)
-        return x - (x ushr 1)
-    }
-
-actual inline val Long.lowestOneBit: Long get() = and(-this)
-
-actual val Long.leadingZeros: Int
-    get() {
-        if (this < 0L) return 0
-        // http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
-        val highBits = ushr(32).toInt()
-        if (highBits != 0) return 1054 - ((highBits.toDouble() + 0.5).toRawBits() shr 52).toInt()
-        val lowBits = toInt()
-        if (lowBits < 0) return 32
-        return 1086 - ((lowBits.toDouble() + 0.5).toRawBits() shr 52).toInt()
-    }
-
-actual val Long.trailingZeros: Int
-    get() {
-        // http://www.hackersdelight.org/hdcodetxt/ntz.c.txt
-        if (this == 0L) return 64
-        var x = toInt()
-        var n = 63
-        if (x == 0) x = ushr(32).toInt() else n -= 32
-        var y = x shl 16; if (y != 0) run { n -= 16; x = y }
-        y = x shl 8; if (y != 0) run { n -= 8; x = y }
-        y = x shl 4; if (y != 0) run { n -= 4; x = y }
-        y = x shl 2; if (y != 0) run { n -= 2; x = y }
-        return n - (x shl 1 ushr 31)
-    }
 
 actual fun Long.reverse(): Long {
     // http://www.hackersdelight.org/hdcodetxt/reverse.c.txt
@@ -87,6 +32,3 @@ actual fun Long.reverseBytes(): Long {
     x = x and 0x00FF00FF00FF00FFL shl 8 or (x ushr 8 and 0x00FF00FF00FF00FFL)
     return x shl 48 or (x and 0xFFFF0000L shl 16) or (x ushr 16 and 0xFFFF0000L) or (x ushr 48)
 }
-
-actual inline infix fun Long.rol(bitCount: Int): Long = shl(bitCount) or ushr(-bitCount)
-actual inline infix fun Long.ror(bitCount: Int): Long = ushr(bitCount) or shl(-bitCount)
